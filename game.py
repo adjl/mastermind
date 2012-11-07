@@ -8,7 +8,7 @@ from functions import is_odd
 
 class Game(object):
     def __init__(self):
-        self.PAUSE = 1
+        self.PAUSE = 2
         self.WIDTH = 80
 
         self.MIN = 3
@@ -236,7 +236,7 @@ class Game(object):
 
         if not saved_games:
             print "No saved games found. Aborting..."
-            self.__pause(self.PAUSE * 2)
+            self.__pause(self.PAUSE)
             return
 
         saved_names = list(saved_games)
@@ -267,7 +267,7 @@ class Game(object):
             load_file = open(load_name, 'r')
         except IOError:
             print "Game cannot be loaded. Aborting..."
-            self.__pause(self.PAUSE * 2)
+            self.__pause(self.PAUSE)
             return
 
         try:
@@ -290,7 +290,7 @@ class Game(object):
 
         except pickle.UnpicklingError:
             print "Game cannot be loaded. Aborting..."
-            self.__pause(self.PAUSE * 2)
+            self.__pause(self.PAUSE)
             # delete load file if failed?
             load_file.close()
             return
@@ -502,13 +502,13 @@ class Game(object):
 
             print "%s's secret pattern is" % codemaker.name,
             codemaker.show_secret_pattern(self.colour_names)
-            self.__pause(self.PAUSE * 3)
+            self.__pause(self.PAUSE * 1.5)
 
             self.give_game_feedback(codemaker, codebreaker)
-            self.__pause(self.PAUSE * 2)
+            self.__pause(self.PAUSE)
 
             if self.is_last_game(game):
                 self.declare_winner(codemaker, codebreaker)
-                self.__pause(self.PAUSE * 2)
+                self.__pause(self.PAUSE)
             else:
                 codemaker, codebreaker = codebreaker, codemaker
