@@ -25,14 +25,13 @@ class ComputerPlayer(Player):
             time.sleep(self.PAUSE)
 
         time.sleep(self.PAUSE * 5)
-
         print
 
 
     def reset(self):
         self.colours = []
         self.colours_tried = 0
-        self.phase = 1
+        self.solving_phase = 1
 
 
     def ask_for_name(self, message=''):
@@ -57,19 +56,17 @@ class ComputerPlayer(Player):
     def make_guess(self, pattern_length, pattern_colours, message=''):
         self.guess = []
 
-        if self.phase == 1:
+        if self.solving_phase == 1:
             colour = list(pattern_colours).pop(self.colours_tried)
-
             for peg in range(pattern_length):
                 self.guess.append(colour)
 
-        elif self.phase == 2:
+        elif self.solving_phase == 2:
             for colour in self.solutions:
                 self.guess.append(colour)
 
-        elif self.phase == 3:
+        elif self.solving_phase == 3:
             solution = self.solutions.pop()
-
             for colour in solution:
                 self.guess.append(colour)
 
@@ -79,23 +76,22 @@ class ComputerPlayer(Player):
 
 
     def analyse_feedback(self, feedback, pattern_length):
-        if self.phase == 1:
+        if self.solving_phase == 1:
             colour = self.guess[0]
 
             for key in feedback:
                 self.colours.append(colour)
-
             self.colours_tried += 1
 
             if len(self.colours) == pattern_length:
                 self.solutions = self.colours
-                self.phase = 2
+                self.solving_phase = 2
 
-        elif self.phase == 2:
+        elif self.solving_phase == 2:
             self.solutions = generate_solutions(self.guess, feedback)
-            self.phase = 3
+            self.solving_phase = 3
 
-        elif self.phase == 3:
+        elif self.solving_phase == 3:
             new_solutions = generate_solutions(self.guess, feedback)
             solutions = []
 
