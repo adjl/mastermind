@@ -4,7 +4,6 @@ import random
 import sys
 import time
 
-from errors import ParityError, RangeError
 from functions import is_odd
 
 class Game(object):
@@ -130,10 +129,10 @@ class Game(object):
                 try:
                     value = int(raw_input(">> Enter a new value for %s: " % setting.upper()))
                     if setting == 'g' and is_odd(value):
-                        raise ParityError
+                        raise 'ParityError'
                     elif (setting == 'p' or setting == 'c') and (value < self.MIN or value > self.MAX):
-                        raise RangeError
-                except (ValueError, ParityError, RangeError):
+                        raise 'RangeError'
+                except (ValueError, 'ParityError', 'RangeError'):
                     pass
                 else:
                     break
