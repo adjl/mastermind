@@ -9,9 +9,6 @@ class Player(object):
     def __validate_input(self, pattern_length, pattern_colours, message):
         pattern = raw_input(message)[:pattern_length].lower()
 
-        if pattern == 's':
-            return 'save'
-
         if len(pattern) < pattern_length:
             return None
 
@@ -37,21 +34,14 @@ class Player(object):
         self.secret_pattern = None
 
         while not self.secret_pattern:
-            code = self.__validate_input(pattern_length, pattern_colours, message)
-            if type(code) == type([]):
-                self.secret_pattern = code
+            self.secret_pattern = self.__validate_input(pattern_length, pattern_colours, message)
 
 
     def make_guess(self, pattern_length, pattern_colours, message=''):
         self.guess = None
 
         while not self.guess:
-            code = self.__validate_input(pattern_length, pattern_colours, message)
-            if type(code) == type([]):
-                self.guess = code
-                return None
-            else:
-                return code
+            self.guess = self.__validate_input(pattern_length, pattern_colours, message)
 
 
     def is_correct(self, guess):

@@ -465,8 +465,9 @@ class Game(object):
                 self.display_board()
 
                 while True:
-                    command = codebreaker.make_guess(length, colours, "%s, make a guess: " % codebreaker.name)
-                    if command == 'save':
+                    try:
+                        codebreaker.make_guess(length, colours, "%s, make a guess: " % codebreaker.name)
+                    except (KeyboardInterrupt, EOFError):
                         self.save_game(codemaker, codebreaker, game, turn, length, colours)
                     else:
                         break
