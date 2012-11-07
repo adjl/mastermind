@@ -19,7 +19,6 @@ def add_empty_solution(length):
 
     for i in range(length):
         solutions.append([])
-
         for j in range(length):
             solutions[i].append('')
 
@@ -42,10 +41,8 @@ def add_partially_correct_solution(guess):
 
     for i in range(guess_length):
         for j in range(guess_length):
-
             if guess[i] == guess[j]:
                 continue
-
             solutions.append(add_solution(guess[i], j, guess_length))
 
     remove_duplicate_elements(solutions)
@@ -58,17 +55,13 @@ def merge_solutions(new_solutions, cumulative_solutions):
 
     for new_solution in new_solutions:
         for cumulative_solution in cumulative_solutions:
-
             solution_length = len(new_solution)
 
             for i in range(solution_length):
-
                 if new_solution[i] != '' and cumulative_solution[i] == '':
                     solution = cumulative_solution[:]
                     solution[i] = new_solution[i]
-
                     solutions.append(solution)
-
                     break
 
     remove_duplicate_elements(solutions)

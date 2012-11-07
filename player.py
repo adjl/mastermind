@@ -25,21 +25,18 @@ class Player(object):
 
     def ask_for_name(self, message=''):
         self.name = None
-
         while not self.name:
             self.name = raw_input(message).lower().capitalize()
 
 
     def choose_secret_pattern(self, pattern_length, pattern_colours, message=''):
         self.secret_pattern = None
-
         while not self.secret_pattern:
             self.secret_pattern = self.__validate_input(pattern_length, pattern_colours, message)
 
 
     def make_guess(self, pattern_length, pattern_colours, message=''):
         self.guess = None
-
         while not self.guess:
             self.guess = self.__validate_input(pattern_length, pattern_colours, message)
 

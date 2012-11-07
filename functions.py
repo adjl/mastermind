@@ -5,6 +5,7 @@ def is_odd(number):
 def remove_duplicate_elements(lst):
     lst.sort()
     element = lst[-1]
+
     for i in range(len(lst) - 2, -1, -1):
         if element == lst[i]:
             del lst[i]
