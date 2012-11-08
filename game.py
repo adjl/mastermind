@@ -360,8 +360,7 @@ class Game(object):
 
 
     def display_board(self):
-        print '\n'.join(self.board)
-        print
+	print '\n'.join(self.board) + '\n'
 
 
     def update_board(self, game):
@@ -393,10 +392,9 @@ class Game(object):
 
     def give_game_feedback(self, codemaker, codebreaker):
         if codemaker.is_correct(codebreaker.guess):
-            print "Correct, %s!" % codebreaker.name
+	    print "Correct, %s!\n" % codebreaker.name
         else:
-            print "Fail, %s. Fail." % codebreaker.name
-        print
+	    print "Fail, %s. Fail.i\n" % codebreaker.name
 
 
     def declare_winner(self, player1, player2):
