@@ -106,9 +106,9 @@ class Game(object):
 
             print "Mastermind : Options"
             print "-" * self.WIDTH
-            print "[G] Number of games (must be even, default=2) : %d" % self.games
-            print "[P] Number of pegs (3-8, default=4)           : %d" % self.pegs
-            print "[C] Number of colours (3-8, default=6)        : %d" % self.colours
+	    print "[G] Number of games   (must be even, default=2) : %d" % self.games
+	    print "[P] Number of pegs    (3-8, default=4)          : %d" % self.pegs
+	    print "[C] Number of colours (3-8, default=6)          : %d" % self.colours
             print "[B] Back"
             print "-" * self.WIDTH
             print
