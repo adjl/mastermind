@@ -147,11 +147,9 @@ class Game(object):
 
 
     def save_game(self, codemaker, codebreaker, games, turns, length, colours):
-        print
-
         while True:
             try:
-                confirm = raw_input("Would you like to save your game (y/n)? ")[0].lower()
+		confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except IndexError:
                 pass
             else:
