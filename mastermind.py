@@ -15,9 +15,7 @@ def main():
         elif mode == 'd':
             game.play(ComputerPlayer(), ComputerPlayer())
         elif mode == 'c':
-            load_values = game.load_game()
-            if load_values:
-                game.play(None, None, True, *load_values)
+            game.load_game()
         elif mode == 'i':
             game.instructions()
         elif mode == 'o':
