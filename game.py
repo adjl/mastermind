@@ -240,11 +240,7 @@ class Game(object):
 
         for i, saved_name in enumerate(saved_names):
             saved_names[i] = saved_name.rstrip('.sav')
-
-        print "The saved games found are:"
-        print
-        print '\n'.join(saved_names)
-        print
+	print "Saved games found:  %s\n" % '  '.join(saved_names)
 
         while True:
             load_name = raw_input("Enter the name of the game you want to load: ").lower() + '.sav'
