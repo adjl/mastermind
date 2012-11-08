@@ -158,7 +158,16 @@ class Game(object):
 		else:
 		    return
 
-        if os.path.isfile(save_name):
+	saved_games = os.listdir(self.SAVE_DIR)
+	if saved_games:
+	    saved_names = list(saved_games)
+	    for i, saved_name in enumerate(saved_names):
+		saved_names[i] = saved_name.rstrip('.sav')
+	    print "Saved games found:  %s" % '  '.join(saved_names)
+
+	save_name = raw_input("Enter a name for your save: ").lower()
+
+	if save_name in saved_names:
             while True:
                 try:
                     confirm = raw_input("%s already exists. Would you like to continue (y/n)? " % save_name)[0].lower()
