@@ -153,15 +153,10 @@ class Game(object):
             except IndexError:
                 pass
             else:
-                break
-
-        if confirm != 'y':
-            print "Cancelling..."
-            print
-            return
-
-        save_name = raw_input("Enter a name for your save: ").lower() + '.sav'
-        save_name = os.path.join(self.SAVE_DIR, save_name)
+		if confirm == 'y':
+		    break
+		else:
+		    return
 
         if os.path.isfile(save_name):
             while True:
