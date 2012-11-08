@@ -458,7 +458,10 @@ class Game(object):
                 while True:
                     try:
                         codebreaker.make_guess(length, colours, "%s, make a guess: " % codebreaker.name)
-                    except (KeyboardInterrupt, EOFError):
+		    except KeyboardInterrupt:
+			self.save_game(codemaker, codebreaker, game, turn, length, colours)
+			sys.exit()
+		    except EOFError:
                         self.save_game(codemaker, codebreaker, game, turn, length, colours)
                     else:
                         break
