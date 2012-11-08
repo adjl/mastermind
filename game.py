@@ -251,8 +251,9 @@ class Game(object):
                 break
 
         load_name = os.path.join(self.SAVE_DIR, load_name)
+	load_values = self.load(load_name)
 
-        return self.load(load_name)
+	self.play(None, None, True, *load_values)
 
     
     def load(self, load_name):
