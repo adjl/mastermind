@@ -106,9 +106,9 @@ class Game(object):
 
             print "Mastermind : Options"
             print "-" * self.WIDTH
-	    print "[G] Number of games   (must be even, default=2) : %d" % self.games
-	    print "[P] Number of pegs    (3-8, default=4)          : %d" % self.pegs
-	    print "[C] Number of colours (3-8, default=6)          : %d" % self.colours
+            print "[G] Number of games   (must be even, default=2) : %d" % self.games
+            print "[P] Number of pegs    (3-8, default=4)          : %d" % self.pegs
+            print "[C] Number of colours (3-8, default=6)          : %d" % self.colours
             print "[B] Back"
             print "-" * self.WIDTH
             print
@@ -149,37 +149,37 @@ class Game(object):
     def save_game(self, codemaker, codebreaker, games, turns, length, colours):
         while True:
             try:
-		confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
+                confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except IndexError:
                 pass
             else:
-		if confirm == 'y':
-		    break
-		else:
-		    return
+                if confirm == 'y':
+                    break
+                else:
+                    return
 
-	saved_games = os.listdir(self.SAVE_DIR)
-	if saved_games:
-	    saved_names = list(saved_games)
-	    for i, saved_name in enumerate(saved_names):
-		saved_names[i] = saved_name.rstrip('.sav')
-	    print "Saved games found:  %s" % '  '.join(saved_names)
+        saved_games = os.listdir(self.SAVE_DIR)
+        if saved_games:
+            saved_names = list(saved_games)
+            for i, saved_name in enumerate(saved_names):
+                saved_names[i] = saved_name.rstrip('.sav')
+            print "Saved games found:  %s" % '  '.join(saved_names)
 
-	save_name = raw_input("Enter a name for your save: ").lower()
-
-	if save_name in saved_names:
+        save_name = raw_input("Enter a name for your save: ").lower()
+        
+        if save_name in saved_names:
             while True:
                 try:
-		    confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
+                    confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except IndexError:
                     pass
                 else:
-		    if confirm == 'y':
-			break
-		    else:
-			return
+                    if confirm == 'y':
+                        break
+                    else:
+                        return
 
-	save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
+        save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
 
         if not os.path.isdir(self.SAVE_DIR):
             os.mkdir(self.SAVE_DIR)
@@ -191,7 +191,7 @@ class Game(object):
         try:
             save_file = open(save_name, 'w')
         except IOError:
-	    print "Game cannot be saved. Aborting...\n"
+            print "Game cannot be saved. Aborting...\n"
             return
 
         try:
@@ -213,13 +213,13 @@ class Game(object):
             pickle.dump(colours, save_file)
 
         except pickle.PicklingError:
-	    print "Game cannot be saved. Aborting...\n"
+            print "Game cannot be saved. Aborting...\n"
             # delete save file if failed?
 
         else:
-	    print "Game saved successfully.\n"
+            print "Game saved successfully.\n"
 
-	save_file.close()
+        save_file.close()
 
 
     def load_game(self):
@@ -227,33 +227,30 @@ class Game(object):
 
         print "Mastermind"
         print "-" * self.WIDTH
-	print "Searching saved games directory...\n"
+        print "Searching saved games directory...\n"
 
         saved_games = os.listdir(self.SAVE_DIR)
-
         if not saved_games:
             print "No saved games found. Aborting..."
             self.__pause(self.PAUSE)
             return
 
         saved_names = list(saved_games)
-
         for i, saved_name in enumerate(saved_names):
             saved_names[i] = saved_name.rstrip('.sav')
-	print "Saved games found:  %s\n" % '  '.join(saved_names)
+        print "Saved games found:  %s\n" % '  '.join(saved_names)
 
         while True:
-            load_name = raw_input("Enter the name of the game you want to load: ").lower() + '.sav'
-
+            load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
             if load_name not in saved_games:
                 print "Name not found."
             else:
                 break
 
         load_name = os.path.join(self.SAVE_DIR, load_name)
-	load_values = self.load(load_name)
+        load_values = self.load(load_name)
 
-	self.play(None, None, True, *load_values)
+        self.play(None, None, True, *load_values)
 
     
     def load(self, load_name):
@@ -287,7 +284,6 @@ class Game(object):
             self.__pause(self.PAUSE)
             # delete load file if failed?
             load_file.close()
-            return
 
         else:
             load_file.close()
@@ -320,7 +316,7 @@ class Game(object):
         print "Pegs : %-30d" % length,
         print "Colours: %-30s" % ''.join(colours)
         print
-	print "Press Ctrl-C to quit and Ctrl-D to save."
+        print "Press Ctrl-C to quit and Ctrl-D to save."
         print "-" * self.WIDTH
         print 
 
@@ -360,7 +356,7 @@ class Game(object):
 
 
     def display_board(self):
-	print '\n'.join(self.board) + '\n'
+        print '\n'.join(self.board) + '\n'
 
 
     def update_board(self, game):
@@ -392,9 +388,9 @@ class Game(object):
 
     def give_game_feedback(self, codemaker, codebreaker):
         if codemaker.is_correct(codebreaker.guess):
-	    print "Correct, %s!\n" % codebreaker.name
+            print "Correct, %s!\n" % codebreaker.name
         else:
-	    print "Fail, %s. Fail.i\n" % codebreaker.name
+            print "Fail, %s. Fail.i\n" % codebreaker.name
 
 
     def declare_winner(self, player1, player2):
@@ -458,10 +454,10 @@ class Game(object):
                 while True:
                     try:
                         codebreaker.make_guess(length, colours, "%s, make a guess: " % codebreaker.name)
-		    except KeyboardInterrupt:
-			self.save_game(codemaker, codebreaker, game, turn, length, colours)
-			sys.exit()
-		    except EOFError:
+                    except KeyboardInterrupt:
+                        self.save_game(codemaker, codebreaker, game, turn, length, colours)
+                        sys.exit()
+                    except EOFError:
                         self.save_game(codemaker, codebreaker, game, turn, length, colours)
                     else:
                         break
