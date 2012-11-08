@@ -191,8 +191,7 @@ class Game(object):
         try:
             save_file = open(save_name, 'w')
         except IOError:
-            print "Game cannot be saved. Aborting..."
-            print
+	    print "Game cannot be saved. Aborting...\n"
             return
 
         try:
@@ -214,16 +213,13 @@ class Game(object):
             pickle.dump(colours, save_file)
 
         except pickle.PicklingError:
-            print "Game cannot be saved. Aborting..."
-            print
+	    print "Game cannot be saved. Aborting...\n"
             # delete save file if failed?
-            save_file.close()
-            return
 
         else:
-            print "Game saved successfully."
-            print
-            save_file.close()
+	    print "Game saved successfully.\n"
+
+	save_file.close()
 
 
     def load_game(self):
@@ -231,9 +227,8 @@ class Game(object):
 
         print "Mastermind"
         print "-" * self.WIDTH
+	print "Searching saved games directory...\n"
 
-        print "Searching saved games directory..."
-        print
         saved_games = os.listdir(self.SAVE_DIR)
 
         if not saved_games:
