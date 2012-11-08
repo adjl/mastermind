@@ -170,11 +170,14 @@ class Game(object):
 	if save_name in saved_names:
             while True:
                 try:
-                    confirm = raw_input("%s already exists. Would you like to continue (y/n)? " % save_name)[0].lower()
+		    confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except IndexError:
                     pass
                 else:
-                    break
+		    if confirm == 'y':
+			break
+		    else:
+			return
 
             if confirm != 'y':
                 print "Cancelling..."
