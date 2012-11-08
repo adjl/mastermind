@@ -320,7 +320,7 @@ class Game(object):
         print "Pegs : %-30d" % length,
         print "Colours: %-30s" % ''.join(colours)
         print
-        print "Enter 's' to save."
+	print "Press Ctrl-C to quit and Ctrl-D to save."
         print "-" * self.WIDTH
         print 
 
