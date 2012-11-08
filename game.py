@@ -4,6 +4,7 @@ import random
 import sys
 import time
 
+from board import Board
 from functions import is_odd
 
 class Game(object):
@@ -343,44 +344,6 @@ class Game(object):
         return self.colour_codes[:self.colours]
 
     
-    def setup_board(self):
-        self.board = []
-
-        board_end = (" " * (self.WIDTH / 4)) + "+" + ("-" * (self.pegs * 3 + 2)) + "+" + ("-" * (self.pegs * 2 + 1)) + "+"
-        board_row = (" " * (self.WIDTH / 4)) + "|" + (" " * (self.pegs * 3 + 2)) + "|" + (" " * (self.pegs * 2 + 1)) + "|"
-
-        self.board.append(board_end)
-        for row in range(self.turns * 2 + 1):
-            self.board.append(board_row)
-        self.board.append(board_end)
-
-
-    def display_board(self):
-        print '\n'.join(self.board) + '\n'
-
-
-    def update_board(self, game):
-        guess = list(self.guesses[game]).pop()
-        feedback = list(self.feedback[game]).pop()
-
-        board_row = (" " * (self.WIDTH / 4)) + "|  "
-
-        for colour in guess:
-            board_row += colour + "  "
-
-        board_row += "| "
-
-        for key in feedback:
-            board_row += key + " "
-
-        for empty_key in range(self.pegs - len(feedback)):
-            board_row += "  "
-
-        board_row += "|"
-
-        self.board[len(self.guesses[game]) * 2] = board_row
-
-    
     def record_turn(self, game, guess, feedback):
         self.guesses[game].append(guess)
         self.feedback[game].append(feedback)
@@ -430,7 +393,7 @@ class Game(object):
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
 
-                self.setup_board()
+                self.board = Board(self.turns, self.pegs, self.WIDTH)
 
                 codemaker.reset()
                 codebreaker.reset()
@@ -449,7 +412,7 @@ class Game(object):
                 self.__clear()
 
                 self.display_turn_header(codemaker, codebreaker, game + 1, length, colours, turn + 1)
-                self.display_board()
+                self.board.display()
 
                 while True:
                     try:
@@ -466,7 +429,7 @@ class Game(object):
                     codemaker.feedback = [' ', ' ', ' ', ' ']
 
                     self.record_turn(str(game), codebreaker.guess, codemaker.feedback)
-                    self.update_board(str(game))
+                    self.board.update(turn, codebreaker.guess, codemaker.feedback, length, self.WIDTH)
 
                     break
                 else:
@@ -482,14 +445,14 @@ class Game(object):
                         codemaker.gain_point()
 
                     self.record_turn(str(game), codebreaker.guess, codemaker.feedback)
-                    self.update_board(str(game))
+                    self.board.update(turn, codebreaker.guess, codemaker.feedback, length, self.WIDTH)
 
                     self.__pause(self.PAUSE)
 
             self.__clear()
 
             self.display_turn_header(codemaker, codebreaker, game + 1, length, colours, last_turn=True)
-            self.display_board()
+            self.board.display()
 
             print "%s's secret pattern is" % codemaker.name,
             codemaker.show_secret_pattern(self.colour_names)
