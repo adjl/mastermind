@@ -179,10 +179,7 @@ class Game(object):
 		    else:
 			return
 
-            if confirm != 'y':
-                print "Cancelling..."
-                print
-                return
+	save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
 
         if not os.path.isdir(self.SAVE_DIR):
             os.mkdir(self.SAVE_DIR)
