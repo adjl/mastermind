@@ -18,7 +18,7 @@ class Game(object):
         self.SAVE_DIR = 'saves'
 
         self.modes = ['s', 'm', 'd', 'c', 'i', 'o', 'q']
-        self.settings = {'g': 'games', 'p': 'pegs', 'c': 'colours', 'b': None}
+        self.settings = {'g': 'games', 'p': 'length', 'c': 'colours', 'b': None}
 
         self.colour_codes = ['r', 'g', 'b', 'c', 'm', 'y', 'o', 'p']
         self.feedback_keys = {'correct': 'b', 'partially_correct': 'w'}
