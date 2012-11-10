@@ -9,11 +9,11 @@ def main():
     while True:
         mode = game.menu()
         if mode == 's':
-            game.play(Player(), ComputerPlayer())
+            game.play(player1=Player(), player2=ComputerPlayer())
         elif mode == 'm':
-            game.play(Player(), Player())
+            game.play(player1=Player(), player2=Player())
         elif mode == 'd':
-            game.play(ComputerPlayer(), ComputerPlayer())
+            game.play(player1=ComputerPlayer(), player2=ComputerPlayer())
         elif mode == 'c':
             game.load_game()
         elif mode == 'i':
