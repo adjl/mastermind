@@ -10,11 +10,11 @@ class Player(object):
         pattern = raw_input(message)[:pattern_length].lower()
 
         if len(pattern) < pattern_length:
-            return None
+            return
 
         for colour in pattern:
             if colour not in pattern_colours:
-                return None
+                return
 
         return list(pattern)
 
