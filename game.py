@@ -353,7 +353,7 @@ class Game(object):
         if codemaker.is_correct(codebreaker.guess):
             print "Correct, %s!\n" % codebreaker.name
         else:
-            print "Fail, %s. Fail.i\n" % codebreaker.name
+            print "Fail, %s. Fail.\n" % codebreaker.name
 
 
     def declare_winner(self, player1, player2):
