@@ -1,9 +1,12 @@
 class Board(object):
-    def __init__(self, turns, length, width):
+    def __init__(self, length, width, turns):
+        self.length = length
+        self.width = width
+
         self.board = []
 
-        board_end = (" " * (width / 4)) + "+" + ("-" * (length * 3 + 2)) + "+" + ("-" * (length * 2 + 1)) + "+"
-        board_row = (" " * (width / 4)) + "|" + (" " * (length * 3 + 2)) + "|" + (" " * (length * 2 + 1)) + "|"
+        board_row = self.make_row()
+        board_end = self.make_row("+", "-")
 
         self.board.append(board_end)
         for row in range(turns * 2 + 1):
@@ -11,12 +14,18 @@ class Board(object):
         self.board.append(board_end)
 
 
+    def make_row(self, border="|", slot=" "):
+        return (" " * (self.width / 4)) + border + \
+                (slot * (self.length * 3 + 2)) + border + \
+                (slot * (self.length * 2 + 1)) + border
+
+
     def display(self):
         print '\n'.join(self.board) + '\n'
 
 
-    def update(self, game, guess, feedback, length, width):
-        board_row = (" " * (width / 4)) + "|  "
+    def update(self, turn, guess, feedback):
+        board_row = (" " * (self.width / 4)) + "|  "
 
         for colour in guess:
             board_row += colour + "  "
@@ -26,9 +35,9 @@ class Board(object):
         for key in feedback:
             board_row += key + " "
 
-        for empty_key in range(length - len(feedback)):
+        for empty_key in range(self.length - len(feedback)):
             board_row += "  "
 
         board_row += "|"
 
-        self.board[(game + 1) * 2] = board_row
+        self.board[(turn + 1) * 2] = board_row

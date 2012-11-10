@@ -393,7 +393,7 @@ class Game(object):
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
 
-                self.board = Board(self.turns, self.pegs, self.WIDTH)
+                self.board = Board(self.pegs, self.WIDTH, self.turns)
 
                 codemaker.reset()
                 codebreaker.reset()
@@ -429,7 +429,7 @@ class Game(object):
                     codemaker.feedback = [' ', ' ', ' ', ' ']
 
                     self.record_turn(str(game), codebreaker.guess, codemaker.feedback)
-                    self.board.update(turn, codebreaker.guess, codemaker.feedback, length, self.WIDTH)
+                    self.board.update(turn, codebreaker.guess, codemaker.feedback)
 
                     break
                 else:
@@ -445,7 +445,7 @@ class Game(object):
                         codemaker.gain_point()
 
                     self.record_turn(str(game), codebreaker.guess, codemaker.feedback)
-                    self.board.update(turn, codebreaker.guess, codemaker.feedback, length, self.WIDTH)
+                    self.board.update(turn, codebreaker.guess, codemaker.feedback)
 
                     self.__pause(self.PAUSE)
 
