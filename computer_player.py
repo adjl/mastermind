@@ -28,7 +28,10 @@ class ComputerPlayer(Player):
         print
 
 
-    def reset(self):
+    def remember_rules(self, pattern_length, pattern_colours):
+        self.pattern_length = pattern_length
+        self.pattern_colours = pattern_colours
+
         self.colours = []
         self.colours_tried = 0
         self.solving_phase = 1
@@ -42,23 +45,23 @@ class ComputerPlayer(Player):
         self.__type(self.name)
 
 
-    def choose_secret_pattern(self, pattern_length, pattern_colours, message=''):
+    def choose_secret_pattern(self, message=''):
         self.secret_pattern = []
 
-        for colour in range(pattern_length):
-            self.secret_pattern.append(random.choice(pattern_colours))
+        for colour in range(self.pattern_length):
+            self.secret_pattern.append(random.choice(self.pattern_colours))
 
         if message:
             print message.rstrip(),
-        self.__type("?" * pattern_length)
+        self.__type("?" * self.pattern_length)
 
 
-    def make_guess(self, pattern_length, pattern_colours, message=''):
+    def make_guess(self, message=''):
         self.guess = []
 
         if self.solving_phase == 1:
-            colour = list(pattern_colours).pop(self.colours_tried)
-            for peg in range(pattern_length):
+            colour = list(self.pattern_colours).pop(self.colours_tried)
+            for peg in range(self.pattern_length):
                 self.guess.append(colour)
 
         elif self.solving_phase == 2:
@@ -75,7 +78,7 @@ class ComputerPlayer(Player):
         self.__type(''.join(self.guess))
 
 
-    def analyse_feedback(self, feedback, pattern_length):
+    def analyse_feedback(self, feedback):
         if self.solving_phase == 1:
             colour = self.guess[0]
 
@@ -83,7 +86,7 @@ class ComputerPlayer(Player):
                 self.colours.append(colour)
             self.colours_tried += 1
 
-            if len(self.colours) == pattern_length:
+            if len(self.colours) == self.pattern_length:
                 self.solutions = self.colours
                 self.solving_phase = 2
 

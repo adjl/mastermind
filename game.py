@@ -395,15 +395,15 @@ class Game(object):
 
                 self.board = Board(self.pegs, self.WIDTH, self.turns)
 
-                codemaker.reset()
-                codebreaker.reset()
+                codemaker.remember_rules(length, colours)
+                codebreaker.remember_rules(length, colours)
 
                 self.__clear()
 
                 self.display_game_header(codemaker, codebreaker, game + 1, length, colours)
 
                 print "%s, DON'T LOOK!" % codebreaker.name.upper()
-                codemaker.choose_secret_pattern(length, colours, "%s, choose a secret pattern: " % codemaker.name)
+                codemaker.choose_secret_pattern("%s, choose a secret pattern: " % codemaker.name)
 
             for turn in range(turns, self.turns):
                 if load_game:
@@ -416,7 +416,7 @@ class Game(object):
 
                 while True:
                     try:
-                        codebreaker.make_guess(length, colours, "%s, make a guess: " % codebreaker.name)
+                        codebreaker.make_guess("%s, make a guess: " % codebreaker.name)
                     except KeyboardInterrupt:
                         self.save_game(codemaker, codebreaker, game, turn, length, colours)
                         sys.exit()
@@ -438,7 +438,7 @@ class Game(object):
                     print "%s's feedback is" % codemaker.name,
                     codemaker.show_feedback(self.feedback_names)
 
-                    codebreaker.analyse_feedback(codemaker.feedback, length)
+                    codebreaker.analyse_feedback(codemaker.feedback)
 
                     codemaker.gain_point()
                     if self.is_last_turn(turn):

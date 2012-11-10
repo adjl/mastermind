@@ -6,21 +6,22 @@ class Player(object):
         self.score = 0
 
 
-    def __validate_input(self, pattern_length, pattern_colours, message):
-        pattern = raw_input(message)[:pattern_length].lower()
+    def __validate_input(self, message):
+        pattern = raw_input(message)[:self.pattern_length].lower()
 
-        if len(pattern) < pattern_length:
+        if len(pattern) < self.pattern_length:
             return
 
         for colour in pattern:
-            if colour not in pattern_colours:
+            if colour not in self.pattern_colours:
                 return
 
         return list(pattern)
 
 
-    def reset(self):
-        pass
+    def remember_rules(self, pattern_length, pattern_colours):
+        self.pattern_length = pattern_length
+        self.pattern_colours = pattern_colours
 
 
     def ask_for_name(self, message=''):
@@ -29,16 +30,16 @@ class Player(object):
             self.name = raw_input(message).lower().capitalize()
 
 
-    def choose_secret_pattern(self, pattern_length, pattern_colours, message=''):
+    def choose_secret_pattern(self, message=''):
         self.secret_pattern = None
         while not self.secret_pattern:
-            self.secret_pattern = self.__validate_input(pattern_length, pattern_colours, message)
+            self.secret_pattern = self.__validate_input(message)
 
 
-    def make_guess(self, pattern_length, pattern_colours, message=''):
+    def make_guess(self, message=''):
         self.guess = None
         while not self.guess:
-            self.guess = self.__validate_input(pattern_length, pattern_colours, message)
+            self.guess = self.__validate_input(message)
 
 
     def is_correct(self, guess):
@@ -75,7 +76,7 @@ class Player(object):
             print 'none'
 
 
-    def analyse_feedback(self, feedback, pattern_length):
+    def analyse_feedback(self, feedback):
         pass
 
 
