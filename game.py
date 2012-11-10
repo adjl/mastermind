@@ -27,7 +27,7 @@ class Game(object):
         self.feedback_names = {'b': 'black', 'w': 'white'}
 
         self.games = 2
-        self.pegs = 4
+        self.length = 4
         self.colours = 6
         self.turns = 12
 
@@ -108,7 +108,7 @@ class Game(object):
             print "Mastermind : Options"
             print "-" * self.WIDTH
             print "[G] Number of games   (must be even, default=2) : %d" % self.games
-            print "[P] Number of pegs    (3-8, default=4)          : %d" % self.pegs
+            print "[P] Number of pegs    (3-8, default=4)          : %d" % self.length
             print "[C] Number of colours (3-8, default=6)          : %d" % self.colours
             print "[B] Back"
             print "-" * self.WIDTH
@@ -147,7 +147,7 @@ class Game(object):
         sys.exit()
 
 
-    def save_game(self, codemaker, codebreaker, games, turns, length, colours):
+    def save_game(self, codemaker, codebreaker, games, turns, colours):
         while True:
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
@@ -185,10 +185,10 @@ class Game(object):
         if not os.path.isdir(self.SAVE_DIR):
             os.mkdir(self.SAVE_DIR)
 
-        self.save(save_name, codemaker, codebreaker, games, turns, length, colours)
+        self.save(save_name, codemaker, codebreaker, games, turns, colours)
 
 
-    def save(self, save_name, codemaker, codebreaker, games, turns, length, colours):
+    def save(self, save_name, codemaker, codebreaker, games, turns, colours):
         try:
             save_file = open(save_name, 'w')
         except IOError:
@@ -197,7 +197,7 @@ class Game(object):
 
         try:
             pickle.dump(self.games, save_file)
-            pickle.dump(self.pegs, save_file)
+            pickle.dump(self.length, save_file)
             pickle.dump(self.colours, save_file)
             pickle.dump(self.turns, save_file)
 
@@ -210,7 +210,6 @@ class Game(object):
 
             pickle.dump(games, save_file)
             pickle.dump(turns, save_file)
-            pickle.dump(length, save_file)
             pickle.dump(colours, save_file)
 
         except pickle.PicklingError:
@@ -264,7 +263,7 @@ class Game(object):
 
         try:
             self.games = pickle.load(load_file)
-            self.pegs = pickle.load(load_file)
+            self.length = pickle.load(load_file)
             self.colours = pickle.load(load_file)
             self.turns = pickle.load(load_file)
             
@@ -277,7 +276,6 @@ class Game(object):
 
             games = pickle.load(load_file)
             turns = pickle.load(load_file)
-            length = pickle.load(load_file)
             colours = pickle.load(load_file)
 
         except pickle.UnpicklingError:
@@ -288,16 +286,16 @@ class Game(object):
 
         else:
             load_file.close()
-            return (codemaker, codebreaker, games, turns, length, colours)
+            return (codemaker, codebreaker, games, turns, colours)
 
 
-    def display_game_header(self, codemaker, codebreaker, game, length, colours):
+    def display_game_header(self, codemaker, codebreaker, game, colours):
         print "Mastermind : Play : Game (%d/%d)" % (game, self.games)
         print "-" * self.WIDTH
         print "%s will be playing as the codemaker" % codemaker.name
         print "%s will be playing as the codebreaker" % codebreaker.name
         print
-        print "Using %d pegs" % length
+        print "Using %d pegs" % self.length
         print "Using %d colours:" % len(colours),
         for colour in colours:
             print self.colour_names[colour],
@@ -306,7 +304,7 @@ class Game(object):
         print
 
 
-    def display_turn_header(self, codemaker, codebreaker, game, length, colours, turn=0, last_turn=False):
+    def display_turn_header(self, codemaker, codebreaker, game, colours, turn=0, last_turn=False):
         if last_turn:
             print "Mastermind : Play : Game (%d/%d)" % (game, self.games)
         else:
@@ -314,7 +312,7 @@ class Game(object):
         print "-" * self.WIDTH
         print "(Codemaker) %-15s : %-7d" % (codemaker.name, codemaker.score),
         print "(Codebreaker) %-15s : %-7d" % (codebreaker.name, codebreaker.score)
-        print "Pegs : %-30d" % length,
+        print "Pegs : %-30d" % self.length,
         print "Colours: %-30s" % ''.join(colours)
         print
         print "Press Ctrl-C to quit and Ctrl-D to save."
@@ -378,9 +376,8 @@ class Game(object):
         return game == self.games - 1
 
     
-    def play(self, player1, player2, load_game=False, codemaker=None, codebreaker=None, games=0, turns=0, length=0, colours=[]):
+    def play(self, player1, player2, load_game=False, codemaker=None, codebreaker=None, games=0, turns=0, colours=[]):
         if not load_game:
-            length = self.pegs
             colours = self.allocate_colours()
 
             self.__clear()
@@ -393,14 +390,14 @@ class Game(object):
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
 
-                self.board = Board(self.pegs, self.WIDTH, self.turns)
+                self.board = Board(self.length, self.WIDTH, self.turns)
 
-                codemaker.remember_rules(length, colours)
-                codebreaker.remember_rules(length, colours)
+                codemaker.remember_rules(self.length, colours)
+                codebreaker.remember_rules(self.length, colours)
 
                 self.__clear()
 
-                self.display_game_header(codemaker, codebreaker, game + 1, length, colours)
+                self.display_game_header(codemaker, codebreaker, game + 1, colours)
 
                 print "%s, DON'T LOOK!" % codebreaker.name.upper()
                 codemaker.choose_secret_pattern("%s, choose a secret pattern: " % codemaker.name)
@@ -411,17 +408,17 @@ class Game(object):
 
                 self.__clear()
 
-                self.display_turn_header(codemaker, codebreaker, game + 1, length, colours, turn + 1)
+                self.display_turn_header(codemaker, codebreaker, game + 1, colours, turn + 1)
                 self.board.display()
 
                 while True:
                     try:
                         codebreaker.make_guess("%s, make a guess: " % codebreaker.name)
                     except KeyboardInterrupt:
-                        self.save_game(codemaker, codebreaker, game, turn, length, colours)
+                        self.save_game(codemaker, codebreaker, game, turn, colours)
                         sys.exit()
                     except EOFError:
-                        self.save_game(codemaker, codebreaker, game, turn, length, colours)
+                        self.save_game(codemaker, codebreaker, game, turn, colours)
                     else:
                         break
 
@@ -451,7 +448,7 @@ class Game(object):
 
             self.__clear()
 
-            self.display_turn_header(codemaker, codebreaker, game + 1, length, colours, last_turn=True)
+            self.display_turn_header(codemaker, codebreaker, game + 1, colours, last_turn=True)
             self.board.display()
 
             print "%s's secret pattern is" % codemaker.name,
