@@ -4,6 +4,8 @@ import random
 import sys
 import time
 
+from player import Player
+from computer_player import ComputerPlayer
 from board import Board
 from functions import is_odd
 
