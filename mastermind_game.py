@@ -157,11 +157,11 @@ class Game(object):
                 if confirm == 'y':
                     break
                 else:
-					print
+                    print
                     return
 
-		if not os.path.isdir(self.SAVE_DIR):
-			os.mkdir(self.SAVE_DIR)
+        if not os.path.isdir(self.SAVE_DIR):
+            os.mkdir(self.SAVE_DIR)
 
         saved_games = os.listdir(self.SAVE_DIR)
         if saved_games:
@@ -169,8 +169,8 @@ class Game(object):
             for i, saved_name in enumerate(saved_names):
                 saved_names[i] = saved_name.rstrip('.sav')
             print "Saved games found:  %s" % '  '.join(saved_names)
-		else:
-			saved_names = []
+        else:
+            saved_names = []
 
         save_name = raw_input("Enter a name for your save: ").lower()
         
@@ -184,7 +184,7 @@ class Game(object):
                     if confirm == 'y':
                         break
                     else:
-						print
+                        print
                         return
 
         save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
