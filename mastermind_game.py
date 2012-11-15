@@ -7,7 +7,7 @@ import time
 from board import Board
 from functions import is_odd
 
-class Game(object):
+class MastermindGame(object):
     def __init__(self):
         self.PAUSE = 2
         self.WIDTH = 80
@@ -41,6 +41,25 @@ class Game(object):
 
     def __pause(self, pause):
         time.sleep(pause)
+
+
+    def main(self):
+        while True:
+            mode = self.menu()
+            if mode == 's':
+                self.play(player1=Player(), player2=ComputerPlayer())
+            elif mode == 'm':
+                self.play(player1=Player(), player2=Player())
+            elif mode == 'd':
+                self.play(player1=ComputerPlayer(), player2=ComputerPlayer())
+            elif mode == 'c':
+                self.load_game()
+            elif mode == 'i':
+                self.instructions()
+            elif mode == 'o':
+                self.options()
+            elif mode == 'q':
+                self.quit()
 
 
     def menu(self):
