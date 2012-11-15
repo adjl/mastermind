@@ -7,7 +7,13 @@ class Player(object):
 
 
     def __validate_input(self, message):
-        pattern = raw_input(message)[:self.pattern_length].lower()
+        while True:
+            try:
+                pattern = raw_input(message)[:self.pattern_length].lower()
+            except EOFError:
+                pass
+            else:
+                break
 
         if len(pattern) < self.pattern_length:
             return
@@ -27,7 +33,10 @@ class Player(object):
     def ask_for_name(self, message=''):
         self.name = None
         while not self.name:
-            self.name = raw_input(message).lower().capitalize()
+            try:
+                self.name = raw_input(message).lower().capitalize()
+            except EOFError:
+                pass
 
 
     def choose_secret_pattern(self, message=''):

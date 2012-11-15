@@ -86,6 +86,8 @@ class MastermindGame(object):
                     mode = raw_input("> ")[0].lower()
                 except IndexError:
                     mode = None
+                except EOFError:
+                    pass
             return mode
 
 
@@ -143,6 +145,8 @@ class MastermindGame(object):
                     setting = raw_input("> ")[0].lower()
                 except IndexError:
                     setting = None
+                except EOFError:
+                    pass
 
             if setting == 'b':
                break
@@ -154,7 +158,7 @@ class MastermindGame(object):
                         raise 'ParityError'
                     elif (setting == 'p' or setting == 'c') and (value < self.MIN or value > self.MAX):
                         raise 'RangeError'
-                except (ValueError, 'ParityError', 'RangeError'):
+                except (EOFError, ValueError, 'ParityError', 'RangeError'):
                     pass
                 else:
                     break
@@ -172,7 +176,7 @@ class MastermindGame(object):
         while True:
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
-            except IndexError:
+            except (EOFError, IndexError):
                 pass
             else:
                 if confirm == 'y':
@@ -192,14 +196,22 @@ class MastermindGame(object):
             print "Saved games found:  %s" % '  '.join(saved_names)
         else:
             saved_names = []
-
-        save_name = raw_input("Enter a name for your save: ").lower()
+ 
+        while True:
+            try:
+                save_name = raw_input("Enter a name for your save: ").lower()
+                if save_name == '':
+                    raise 'NameError'
+            except (EOFError, 'NameError'):
+                pass
+            else:
+                break
         
         if save_name in saved_names:
             while True:
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
-                except IndexError:
+                except (EOFError, IndexError):
                     pass
                 else:
                     if confirm == 'y':
@@ -266,8 +278,11 @@ class MastermindGame(object):
         print "Saved games found:  %s\n" % '  '.join(saved_names)
 
         while True:
-            load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
-            if load_name not in saved_games:
+            try:
+                load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
+                if load_name not in saved_games or load_name == '':
+                    raise 'NameError'
+            except (EOFError, 'NameError'):
                 print "Name not found."
             else:
                 break
