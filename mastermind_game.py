@@ -355,7 +355,7 @@ class MastermindGame(object):
         print "Pegs : %-30d" % self.length,
         print "Colours: %-30s" % ''.join(self.current_colours)
         print
-        print "Press Ctrl-C to quit and Ctrl-D to save."
+        print "Press Ctrl-C to quit or Ctrl-D to save."
         print "-" * self.WIDTH
         print 
 
