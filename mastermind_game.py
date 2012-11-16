@@ -173,16 +173,16 @@ class MastermindGame(object):
 
 
     def save_game(self, codemaker, codebreaker):
-		confirm = None
-		while confirm != 'y' or confirm != 'n':
+        confirm = None
+        while confirm != 'y' or confirm != 'n':
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except (EOFError, IndexError):
                 pass
 
-		if confirm == 'n':
-			print
-			return
+        if confirm == 'n':
+            print
+            return
 
         if not os.path.isdir(self.SAVE_DIR):
             os.mkdir(self.SAVE_DIR)
@@ -194,24 +194,24 @@ class MastermindGame(object):
                 saved_names[i] = saved_name.rstrip('.sav')
             print "Saved games found:  %s" % '  '.join(saved_names)
  
-		save_name = None
-		while not save_name:
+        save_name = None
+        while not save_name:
             try:
                 save_name = raw_input("Enter a name for your save: ").lower()
-			except EOFError:
+            except EOFError:
                 pass
         
         if save_name in saved_names:
-			confirm = None
-			while confirm != 'y' or confirm != 'n':
+            confirm = None
+            while confirm != 'y' or confirm != 'n':
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except (EOFError, IndexError):
                     pass
 
-			if confirm == 'n':
-				print
-				return
+            if confirm == 'n':
+                print
+                return
 
         save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
 
@@ -235,9 +235,9 @@ class MastermindGame(object):
             pickle.dump(self.feedback, save_file)
             pickle.dump(self.board, save_file)
 
-			pickle.dump(self.current_colours, save_file)
-			pickle.dump(self.current_game, save_file)
-			pickle.dump(self.current_turn, save_file)
+            pickle.dump(self.current_colours, save_file)
+            pickle.dump(self.current_game, save_file)
+            pickle.dump(self.current_turn, save_file)
 
             pickle.dump(codemaker, save_file)
             pickle.dump(codebreaker, save_file)
@@ -269,12 +269,12 @@ class MastermindGame(object):
             saved_names[i] = saved_name.rstrip('.sav')
         print "Saved games found:  %s\n" % '  '.join(saved_names)
 
-		load_name = None
-		while load_name not in saved_games:
+        load_name = None
+        while load_name not in saved_games:
             try:
                 load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
-			except EOFError:
-				pass
+            except EOFError:
+                pass
 
         load_name = os.path.join(self.SAVE_DIR, load_name)
         codemaker, codebreaker = self.load(load_name)
@@ -300,9 +300,9 @@ class MastermindGame(object):
             self.feedback = pickle.load(load_file)
             self.board = pickle.load(load_file)
 
-			self.current_colours = pickle.load(load_file)
-			self.current_game = pickle.load(load_file)
-			self.current_turn = pickle.load(load_file)
+            self.current_colours = pickle.load(load_file)
+            self.current_game = pickle.load(load_file)
+            self.current_turn = pickle.load(load_file)
 
             codemaker = pickle.load(load_file)
             codebreaker = pickle.load(load_file)
@@ -314,7 +314,7 @@ class MastermindGame(object):
 
         else:
             load_file.close()
-			return codemaker, codebreaker
+            return codemaker, codebreaker
 
 
     def display_game_header(self, codemaker, codebreaker):
@@ -414,22 +414,22 @@ class MastermindGame(object):
             self.name_players(player1, player2)
             codemaker, codebreaker = self.decide_roles(player1, player2)
 
-			codemaker.remember_rules(self.length, self.current_colours)
-			codebreaker.remember_rules(self.length, self.current_colours)
+            codemaker.remember_rules(self.length, self.current_colours)
+            codebreaker.remember_rules(self.length, self.current_colours)
 
         for game in range(self.current_game, self.games):
 
-			if not load_game:
+            if not load_game:
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
 
                 self.board = Board(self.length, self.WIDTH, self.turns)
 
-				self.current_game = game
-				self.current_turn = 0
+                self.current_game = game
+                self.current_turn = 0
 
-				codemaker.get_ready()
-				codebreaker.get_ready()
+                codemaker.get_ready()
+                codebreaker.get_ready()
 
                 self.__clear()
 
@@ -439,6 +439,7 @@ class MastermindGame(object):
                 codemaker.choose_secret_pattern("%s, choose a secret pattern: " % codemaker.name)
 
             for turn in range(self.current_turn, self.turns):
+
                 if load_game:
                     load_game = False
 
@@ -464,6 +465,7 @@ class MastermindGame(object):
                     self.board.update(turn, codebreaker.guess, codemaker.feedback)
 
                     break
+
                 else:
                     codemaker.prepare_feedback(codebreaker.guess, self.feedback_keys)
 
