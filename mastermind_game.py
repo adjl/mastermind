@@ -173,17 +173,16 @@ class MastermindGame(object):
 
 
     def save_game(self, codemaker, codebreaker):
-        while True:
+		confirm = None
+		while confirm != 'y' or confirm != 'n':
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except (EOFError, IndexError):
                 pass
-            else:
-                if confirm == 'y':
-                    break
-                else:
-                    print
-                    return
+
+		if confirm == 'n':
+			print
+			return
 
         if not os.path.isdir(self.SAVE_DIR):
             os.mkdir(self.SAVE_DIR)
@@ -194,31 +193,25 @@ class MastermindGame(object):
             for i, saved_name in enumerate(saved_names):
                 saved_names[i] = saved_name.rstrip('.sav')
             print "Saved games found:  %s" % '  '.join(saved_names)
-        else:
-            saved_names = []
  
-        while True:
+		save_name = None
+		while not save_name:
             try:
                 save_name = raw_input("Enter a name for your save: ").lower()
-                if save_name == '':
-                    raise 'NameError'
-            except (EOFError, 'NameError'):
+			except EOFError:
                 pass
-            else:
-                break
         
         if save_name in saved_names:
-            while True:
+			confirm = None
+			while confirm != 'y' or confirm != 'n':
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except (EOFError, IndexError):
                     pass
-                else:
-                    if confirm == 'y':
-                        break
-                    else:
-                        print
-                        return
+
+			if confirm == 'n':
+				print
+				return
 
         save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
 
@@ -276,15 +269,12 @@ class MastermindGame(object):
             saved_names[i] = saved_name.rstrip('.sav')
         print "Saved games found:  %s\n" % '  '.join(saved_names)
 
-        while True:
+		load_name = None
+		while load_name not in saved_games:
             try:
                 load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
-                if load_name not in saved_games or load_name == '':
-                    raise 'NameError'
-            except (EOFError, 'NameError'):
-                print "Name not found."
-            else:
-                break
+			except EOFError:
+				pass
 
         load_name = os.path.join(self.SAVE_DIR, load_name)
         codemaker, codebreaker = self.load(load_name)
