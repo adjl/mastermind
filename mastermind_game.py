@@ -238,20 +238,19 @@ class MastermindGame(object):
             pickle.dump(self.colours, save_file)
             pickle.dump(self.turns, save_file)
 
-            pickle.dump(self.current_colours, save_file)
-            pickle.dump(self.current_game, save_file)
-            pickle.dump(self.current_turn, save_file)
-
             pickle.dump(self.guesses, save_file)
             pickle.dump(self.feedback, save_file)
             pickle.dump(self.board, save_file)
+
+			pickle.dump(self.current_colours, save_file)
+			pickle.dump(self.current_game, save_file)
+			pickle.dump(self.current_turn, save_file)
 
             pickle.dump(codemaker, save_file)
             pickle.dump(codebreaker, save_file)
 
         except pickle.PicklingError:
             print "Game cannot be saved. Aborting...\n"
-            # delete save file if failed?
 
         else:
             print "Game saved successfully.\n"
@@ -307,13 +306,13 @@ class MastermindGame(object):
             self.colours = pickle.load(load_file)
             self.turns = pickle.load(load_file)
             
-            self.current_colours = pickle.load(load_file)
-            self.current_game = pickle.load(load_file)
-            self.current_turn = pickle.load(load_file)
-
             self.guesses = pickle.load(load_file)
             self.feedback = pickle.load(load_file)
             self.board = pickle.load(load_file)
+
+			self.current_colours = pickle.load(load_file)
+			self.current_game = pickle.load(load_file)
+			self.current_turn = pickle.load(load_file)
 
             codemaker = pickle.load(load_file)
             codebreaker = pickle.load(load_file)
@@ -321,12 +320,11 @@ class MastermindGame(object):
         except pickle.UnpicklingError:
             print "Game cannot be loaded. Aborting..."
             self.__pause(self.PAUSE)
-            # delete load file if failed?
             load_file.close()
 
         else:
             load_file.close()
-            return (codemaker, codebreaker)
+			return codemaker, codebreaker
 
 
     def display_game_header(self, codemaker, codebreaker):
