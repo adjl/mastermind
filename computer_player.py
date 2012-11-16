@@ -32,6 +32,8 @@ class ComputerPlayer(Player):
         self.pattern_length = pattern_length
         self.pattern_colours = pattern_colours
 
+    
+    def get_ready(self):
         self.colours = []
         self.colours_tried = 0
         self.solving_phase = 1

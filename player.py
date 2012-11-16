@@ -29,6 +29,10 @@ class Player(object):
         self.pattern_length = pattern_length
         self.pattern_colours = pattern_colours
 
+    
+    def get_ready(self):
+        pass
+
 
     def ask_for_name(self, message=''):
         self.name = None
