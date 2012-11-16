@@ -414,18 +414,22 @@ class MastermindGame(object):
             self.name_players(player1, player2)
             codemaker, codebreaker = self.decide_roles(player1, player2)
 
-        for game in range(self.current_game, self.games):
-            if not load_game:
-                self.current_game = game
-                self.current_turn = 0
+			codemaker.remember_rules(self.length, self.current_colours)
+			codebreaker.remember_rules(self.length, self.current_colours)
 
+        for game in range(self.current_game, self.games):
+
+			if not load_game:
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
 
                 self.board = Board(self.length, self.WIDTH, self.turns)
 
-                codemaker.remember_rules(self.length, self.current_colours)
-                codebreaker.remember_rules(self.length, self.current_colours)
+				self.current_game = game
+				self.current_turn = 0
+
+				codemaker.get_ready()
+				codebreaker.get_ready()
 
                 self.__clear()
 
