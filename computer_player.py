@@ -100,11 +100,12 @@ class ComputerPlayer(Player):
             self.solving_phase = '3'
 
         elif self.solving_phase == '3':
-            solutions = []
             new_solutions = generate_solutions(self.guess, feedback)
 
-            for solution in self.solutions:
-                if solution in new_solutions:
-                    solutions.append(solution)
+            current_solutions = set(map(tuple, self.solutions))
+            new_solutions = set(map(tuple, new_solutions))
+
+            solutions = current_solutions & new_solutions
+            solutions = map(list, list(solutions))
 
             self.solutions = solutions

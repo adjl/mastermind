@@ -1,4 +1,4 @@
-from functions import remove_empty_elements, remove_duplicates
+from functions import remove_empty_elements
 
 def generate_solutions(guess, feedback):
 
@@ -37,7 +37,8 @@ def generate_solutions(guess, feedback):
                 if guess[i] == guess[j]:
                     continue
                 solutions.append(add_solution(guess[i], j, guess_length))
-        remove_duplicates(solutions)
+        solutions = set(map(tuple, solutions))
+        solutions = map(list, list(solutions))
         return solutions
 
 
@@ -52,7 +53,8 @@ def generate_solutions(guess, feedback):
                         solution[i] = new_solution[i]
                         solutions.append(solution)
                         break
-        remove_duplicates(solutions)
+        solutions = set(map(tuple, solutions))
+        solutions = map(list, list(solutions))
         return solutions
 
 
