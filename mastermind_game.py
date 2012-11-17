@@ -179,7 +179,7 @@ class MastermindGame(object):
 
     def save_game(self, codemaker, codebreaker):
         confirm = None
-        while confirm != 'y' or confirm != 'n':
+        while confirm != 'y' and confirm != 'n':
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except EOFError:
@@ -195,8 +195,8 @@ class MastermindGame(object):
             os.mkdir(self.SAVE_DIR)
 
         saved_games = os.listdir(self.SAVE_DIR)
+        saved_names = list(saved_games)
         if saved_games:
-            saved_names = list(saved_games)
             for i, saved_name in enumerate(saved_names):
                 saved_names[i] = saved_name.rstrip('.sav')
             print "Saved games found:  %s" % '  '.join(saved_names)
@@ -205,13 +205,16 @@ class MastermindGame(object):
         while not save_name:
             try:
                 save_name = raw_input("Enter a name for your save: ").lower()
+                if save_name == '':
+                    print
+                    return
             except EOFError:
                 print
                 pass
         
         if save_name in saved_names:
             confirm = None
-            while confirm != 'y' or confirm != 'n':
+            while confirm != 'y' and confirm != 'n':
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except EOFError:
@@ -354,7 +357,8 @@ class MastermindGame(object):
         print "Pegs : %-30d" % self.length,
         print "Colours: %-30s" % ''.join(self.current_colours)
         print
-        print "Press Ctrl-C to quit or Ctrl-D to save."
+        print "Attention, humans: Press Ctrl-D during your turn to save."
+        print "                   Press Ctrl-C anytime to quit."
         print "-" * self.WIDTH
         print 
 
@@ -468,7 +472,7 @@ class MastermindGame(object):
 
                 while True:
                     try:
-                        codebreaker.make_guess("%s, make a guess: " % codebreaker.name)
+                        codebreaker.make_guess("%s, make a guess: " % codebreaker.name, allow_save=True)
                     except EOFError:
                         self.save_game(codemaker, codebreaker)
                     else:

@@ -6,14 +6,17 @@ class Player(object):
         self.score = 0
 
 
-    def __validate_input(self, message):
+    def __validate_input(self, message, allow_save=False):
         pattern = None
         while not pattern:
-            try:
+            if allow_save:
                 pattern = raw_input(message)[:self.pattern_length].lower()
-            except EOFError:
-                print
-                pass
+            else:
+                try:
+                    pattern = raw_input(message)[:self.pattern_length].lower()
+                except EOFError:
+                    print
+                    pass
 
         if len(pattern) < self.pattern_length:
             return
@@ -50,10 +53,10 @@ class Player(object):
             self.secret_pattern = self.__validate_input(message)
 
 
-    def make_guess(self, message=''):
+    def make_guess(self, message='', allow_save=False):
         self.guess = None
         while not self.guess:
-            self.guess = self.__validate_input(message)
+            self.guess = self.__validate_input(message, allow_save)
 
 
     def is_correct(self, guess):

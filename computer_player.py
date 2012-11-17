@@ -57,7 +57,7 @@ class ComputerPlayer(Player):
         self.__type("?" * self.pattern_length)
 
 
-    def make_guess(self, message=''):
+    def make_guess(self, message='', allow_save=False):
         self.guess = []
 
         if self.solving_phase == '1':
