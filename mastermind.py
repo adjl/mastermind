@@ -3,10 +3,10 @@
 import signal
 
 from mastermind_game import MastermindGame
-from signal_handler import quit_game
+from signal_handler import quit
 
 def main():
-    signal.signal(signal.SIGINT, quit_game)
+    signal.signal(signal.SIGINT, quit)
 
     mastermind = MastermindGame()
     mastermind.main()
