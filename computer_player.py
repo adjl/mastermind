@@ -10,7 +10,7 @@ class ComputerPlayer(Player):
         super(ComputerPlayer, self).__init__()
 
         self.PAUSE = 0.1
-        self.names = ['Chell', 'GLaDOS', 'Companion Cube', 'Curiosity Core', 'Wheatley', 'Caroline']
+        self.names = ['Chell', 'GLaDOS', 'Curiosity Core', 'Turret', 'Companion Cube', 'Wheatley', 'Cave Johnson', 'Caroline', 'Cake']
         self.solutions = []
 
 
