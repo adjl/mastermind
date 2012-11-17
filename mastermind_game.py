@@ -355,6 +355,11 @@ class MastermindGame(object):
         player1.ask_for_name("Hi Player 1! What is your name? ")
         player2.ask_for_name("Hi Player 2! What is your name? ")
 
+        while player1.name == player2.name:
+            print "\nWhoops! Sorry but you can't have the same name.\n"
+            player1.ask_for_name("Change your name, Player 1: ")
+            player2.ask_for_name("Change your name, Player 2: ")
+
 
     def decide_roles(self, player1, player2):
         players = [player1, player2]
