@@ -11,7 +11,6 @@ class ComputerPlayer(Player):
 
         self.PAUSE = 0.1
         self.names = ['Chell', 'GLaDOS', 'Curiosity Core', 'Turret', 'Companion Cube', 'Wheatley', 'Cave Johnson', 'Caroline', 'Cake']
-        self.solutions = []
 
 
     def __type(self, message):
@@ -33,10 +32,10 @@ class ComputerPlayer(Player):
         self.pattern_colours = pattern_colours
 
     
-    def get_ready(self):
-        self.colours = []
+    def ready_for_game(self):
+        self.solutions = []
         self.colours_tried = 0
-        self.solving_phase = 1
+        self.solving_phase = '1'
 
 
     def ask_for_name(self, message=''):
@@ -61,16 +60,16 @@ class ComputerPlayer(Player):
     def make_guess(self, message=''):
         self.guess = []
 
-        if self.solving_phase == 1:
+        if self.solving_phase == '1':
             colour = list(self.pattern_colours).pop(self.colours_tried)
             for peg in range(self.pattern_length):
                 self.guess.append(colour)
 
-        elif self.solving_phase == 2:
+        elif self.solving_phase == '2':
             for colour in self.solutions:
                 self.guess.append(colour)
 
-        elif self.solving_phase == 3:
+        elif self.solving_phase == '3':
             solution = self.solutions.pop()
             for colour in solution:
                 self.guess.append(colour)
@@ -81,30 +80,28 @@ class ComputerPlayer(Player):
 
 
     def analyse_feedback(self, feedback):
-        if self.solving_phase == 1:
+        if self.solving_phase == '1':
             colour = self.guess[0]
-
             for key in feedback:
-                self.colours.append(colour)
+                self.solutions.append(colour)
             self.colours_tried += 1
 
             if self.colours_tried == len(self.pattern_colours) - 1:
                 colour = list(self.pattern_colours).pop(self.colours_tried)
-                for colour in range(self.pattern_length - len(self.colours)):
-                    self.colours.append(colour)
+                for peg in range(self.pattern_length - len(self.solutions)):
+                    self.solutions.append(colour)
                 self.colours_tried += 1
 
-            if len(self.colours) == self.pattern_length:
-                self.solutions = self.colours
-                self.solving_phase = 2
+            if len(self.solutions) == self.pattern_length:
+                self.solving_phase = '2'
 
-        elif self.solving_phase == 2:
+        elif self.solving_phase == '2':
             self.solutions = generate_solutions(self.guess, feedback)
-            self.solving_phase = 3
+            self.solving_phase = '3'
 
-        elif self.solving_phase == 3:
-            new_solutions = generate_solutions(self.guess, feedback)
+        elif self.solving_phase == '3':
             solutions = []
+            new_solutions = generate_solutions(self.guess, feedback)
 
             for solution in self.solutions:
                 if solution in new_solutions:

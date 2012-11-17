@@ -7,7 +7,7 @@ def remove_empty_elements(lst):
         lst.remove(None)
 
 
-def remove_duplicate_elements(lst):
+def remove_duplicates(lst):
     lst.sort()
     for i, element in enumerate(lst):
         if element in lst[:i]:

@@ -7,13 +7,13 @@ class Player(object):
 
 
     def __validate_input(self, message):
-        while True:
+        pattern = None
+        while not pattern:
             try:
                 pattern = raw_input(message)[:self.pattern_length].lower()
             except EOFError:
+                print
                 pass
-            else:
-                break
 
         if len(pattern) < self.pattern_length:
             return
@@ -30,7 +30,7 @@ class Player(object):
         self.pattern_colours = pattern_colours
 
     
-    def get_ready(self):
+    def ready_for_game(self):
         pass
 
 
@@ -40,6 +40,7 @@ class Player(object):
             try:
                 self.name = raw_input(message).lower().capitalize()
             except EOFError:
+                print
                 pass
 
 

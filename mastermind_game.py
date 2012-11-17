@@ -19,7 +19,7 @@ class MastermindGame(object):
 
         self.SAVE_DIR = 'saves'
 
-        self.modes = ['s', 'm', 'd', 'c', 'i', 'o', 'q']
+        self.modes = ['s', 'm', 'd', 'l', 'i', 'o', 'q']
         self.settings = {'g': 'games', 'p': 'length', 'c': 'colours', 'b': None}
 
         self.colour_codes = ['r', 'g', 'b', 'c', 'm', 'y', 'o', 'p']
@@ -54,7 +54,7 @@ class MastermindGame(object):
                 self.play(player1=Player(), player2=Player())
             elif mode == 'd':
                 self.play(player1=ComputerPlayer(), player2=ComputerPlayer())
-            elif mode == 'c':
+            elif mode == 'l':
                 self.load_game()
             elif mode == 'i':
                 self.instructions()
@@ -73,7 +73,7 @@ class MastermindGame(object):
             print "[S] Single-player (PvC)"
             print "[M] Multiplayer (PvP)"
             print "[D] Duel (CvC)"
-            print "[C] Continue"
+            print "[L] Load"
             print "[I] Instructions"
             print "[O] Options"
             print "[Q] Quit"
@@ -87,6 +87,7 @@ class MastermindGame(object):
                 except IndexError:
                     mode = None
                 except EOFError:
+                    print
                     pass
             return mode
 
@@ -146,6 +147,7 @@ class MastermindGame(object):
                 except IndexError:
                     setting = None
                 except EOFError:
+                    print
                     pass
 
             if setting == 'b':
@@ -158,7 +160,10 @@ class MastermindGame(object):
                         raise 'ParityError'
                     elif (setting == 'p' or setting == 'c') and (value < self.MIN or value > self.MAX):
                         raise 'RangeError'
-                except (EOFError, ValueError, 'ParityError', 'RangeError'):
+                except EOFError:
+                    print 
+                    pass
+                except (ValueError, 'ParityError', 'RangeError'):
                     pass
                 else:
                     break
@@ -177,9 +182,11 @@ class MastermindGame(object):
         while confirm != 'y' or confirm != 'n':
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
-            except (EOFError, IndexError):
+            except EOFError:
+                print
                 pass
-
+            except IndexError:
+                pass
         if confirm == 'n':
             print
             return
@@ -199,6 +206,7 @@ class MastermindGame(object):
             try:
                 save_name = raw_input("Enter a name for your save: ").lower()
             except EOFError:
+                print
                 pass
         
         if save_name in saved_names:
@@ -206,18 +214,52 @@ class MastermindGame(object):
             while confirm != 'y' or confirm != 'n':
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
-                except (EOFError, IndexError):
+                except EOFError:
+                    print
                     pass
-
+                except IndexError:
+                    pass
             if confirm == 'n':
                 print
                 return
 
         save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
-
         self.save(save_name, codemaker, codebreaker)
 
 
+    def load_game(self):
+        self.__clear()
+
+        print "Mastermind"
+        print "-" * self.WIDTH
+        print "Searching saved games directory...\n"
+
+        saved_games = os.listdir(self.SAVE_DIR)
+        if not saved_games:
+            print "No saved games found. Aborting..."
+            self.__pause(self.PAUSE)
+            return
+
+        saved_names = list(saved_games)
+        for i, saved_name in enumerate(saved_names):
+            saved_names[i] = saved_name.rstrip('.sav')
+        print "Saved games found:  %s\n" % '  '.join(saved_names)
+
+        load_name = None
+        while load_name not in saved_names:
+            try:
+                load_name = raw_input("Enter the name of the save you want to load: ").lower()
+                if load_name == '':
+                    return
+            except EOFError:
+                print
+                pass
+
+        load_name = os.path.join(self.SAVE_DIR, load_name + '.sav')
+        codemaker, codebreaker = self.load(load_name)
+        self.play(codemaker=codemaker, codebreaker=codebreaker, load_game=True)
+
+    
     def save(self, save_name, codemaker, codebreaker):
         try:
             save_file = open(save_name, 'w')
@@ -251,37 +293,6 @@ class MastermindGame(object):
         save_file.close()
 
 
-    def load_game(self):
-        self.__clear()
-
-        print "Mastermind"
-        print "-" * self.WIDTH
-        print "Searching saved games directory...\n"
-
-        saved_games = os.listdir(self.SAVE_DIR)
-        if not saved_games:
-            print "No saved games found. Aborting..."
-            self.__pause(self.PAUSE)
-            return
-
-        saved_names = list(saved_games)
-        for i, saved_name in enumerate(saved_names):
-            saved_names[i] = saved_name.rstrip('.sav')
-        print "Saved games found:  %s\n" % '  '.join(saved_names)
-
-        load_name = None
-        while load_name not in saved_games:
-            try:
-                load_name = raw_input("Enter the name of the save you want to load: ").lower() + '.sav'
-            except EOFError:
-                pass
-
-        load_name = os.path.join(self.SAVE_DIR, load_name)
-        codemaker, codebreaker = self.load(load_name)
-
-        self.play(codemaker=codemaker, codebreaker=codebreaker, load_game=True)
-
-    
     def load(self, load_name):
         try:
             load_file = open(load_name, 'r')
@@ -433,8 +444,8 @@ class MastermindGame(object):
                 self.current_game = game
                 self.current_turn = 0
 
-                codemaker.get_ready()
-                codebreaker.get_ready()
+                codemaker.ready_for_game()
+                codebreaker.ready_for_game()
 
                 self.__clear()
 
