@@ -88,6 +88,12 @@ class ComputerPlayer(Player):
                 self.colours.append(colour)
             self.colours_tried += 1
 
+            if self.colours_tried == len(self.pattern_colours) - 1:
+                colour = list(self.pattern_colours).pop(self.colours_tried)
+                for colour in range(self.pattern_length - len(self.colours)):
+                    self.colours.append(colour)
+                self.colours_tried += 1
+
             if len(self.colours) == self.pattern_length:
                 self.solutions = self.colours
                 self.solving_phase = 2
