@@ -2,5 +2,6 @@ TODO
 ----
 Speed up solving algorithm
 Decouple game logic and interface code
+Implement single-player and duel modes in the graphical version
+Implement saving and loading in the graphical version
 Write tests
-Polish GUI

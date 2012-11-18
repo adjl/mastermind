@@ -1,9 +1,11 @@
 Mastermind Python coursework
 A.Y. 2012 - 2013
 
+
 About
 -----
 A Python implementation of the classic board game 'Mastermind'.
+
 
 Features
 --------
@@ -36,6 +38,7 @@ To keep track of the running game, an ASCII board is displayed and continually
 updated with each new guess and feedback. At the start of a new game, the board
 is cleared.
 
+
 Technical Info
 --------------
 The game has a global signal handler which catches all KeyboardInterrupts
@@ -55,12 +58,19 @@ greater the number of pegs, colours and white pegs, the slower the algorithm.
 (The algorithm is at least O(n3), I think. :[)
 
 At the worst case (8 pegs, 8 colours and 8 white pegs), the algorithm takes
-13m 75s to generate solutions.
+13m 45s to generate solutions.
+
+PyGTK is used to make the graphical user interface of the game.
+
 
 Usage
 -----
-To start playing the game, choose one of the three available modes [S, M, D].
-You can also change settings in the Options screen [O].
+To start the text version of the game, run
+    ./mastermind.py -t, or simply
+    ./mastermind.py
+
+To start playing, choose one of the three available modes [S, M, D]. You can
+also change settings in the Options screen [O].
 
 You will then be asked to enter your name and, when playing as the codemaker,
 your secret pattern.
@@ -73,6 +83,10 @@ save file name when prompted. If the save file already exists, you will be
 asked if you want to overwrite.
 
 To load a game, choose Load [L] at the menu screen.
+
+To start the graphical version of the game, run
+    ./mastermind.py -g
+
 
 References
 ----------
@@ -90,11 +104,18 @@ Computer typing simulation:
     http://stackoverflow.com/questions/4099422/print-slowly-in-python-simulate-t
     yping
 
+
 Disclaimer
 ----------
 The ComputerPlayer names are taken from the games 'Portal' and 'Portal 2'. They
 do not belong to me, they belong to Valve.
 
+
 To Do
 -----
 See TODO
+
+
+Notes
+-----
+See NOTES
