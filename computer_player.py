@@ -123,7 +123,7 @@ class ComputerPlayer(Player):
             current_solutions = set(map(tuple, self.solutions))
             new_solutions = set(map(tuple, new_solutions))
 
-            solutions = current_solutions & new_solutions  # Get intersection
+            solutions = current_solutions & new_solutions  # Set intersection
             solutions = map(list, list(solutions))
 
             self.solutions = solutions

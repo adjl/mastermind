@@ -36,11 +36,11 @@ class Board(object):
         """Update board with given guess and feedback at turn."""
         board_row = (" " * (self.screen_width / 4)) + "|  "
         for colour in guess:
-            board_row += colour + "  "  # Add guess pegs
+            board_row += colour + "  "          # Add guess
         board_row += "| "
         for key in feedback:
-            board_row += key + " "  # Add feedback keys
+            board_row += key + " "              # Add feedback
         for empty_key in range(self.pattern_length - len(feedback)):
-            board_row += "  "       # Add empty feedback slots
+            board_row += "  "                   # Add empty slots
         board_row += "|"
         self.board[(turn + 1) * 2] = board_row  # Update board row

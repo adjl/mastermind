@@ -15,7 +15,7 @@ class Player(object):
         """Validate pattern input; return pattern on success, else None."""
         pattern = None
         while not pattern:
-            if allow_save:  # Allow saving using Ctrl-D
+            if allow_save:  # Allow Ctrl-D saving
                 pattern = raw_input(message)[:self.pattern_length].lower()
             else:
                 try:
@@ -24,7 +24,7 @@ class Player(object):
                     print
                     pass
 
-        if len(pattern) < self.pattern_length:  # Pattern too short
+        if len(pattern) < self.pattern_length:      # Too short
             return
 
         for colour in pattern:
@@ -85,7 +85,7 @@ class Player(object):
         for i, colour in enumerate(guess):
             if colour == secret_pattern[i]:
                 self.feedback.append(feedback_keys['correct'])
-                guess[i] = secret_pattern[i] = None  # Mark as done
+                guess[i] = secret_pattern[i] = None  # Done
 
         # Remove done pegs
         remove_empty_elements(guess)
@@ -95,7 +95,7 @@ class Player(object):
         for i, colour in enumerate(guess):
             if colour in secret_pattern:
                 self.feedback.append(feedback_keys['partially_correct'])
-                secret_pattern[secret_pattern.index(colour)] = None  # Mark as done
+                secret_pattern[secret_pattern.index(colour)] = None  # Done
 
 
     def show_feedback(self, feedback_names):

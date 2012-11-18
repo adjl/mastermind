@@ -64,7 +64,7 @@ def generate_solutions(guess, feedback):
         solutions = []
         for i in range(guess_length):
             for j in range(guess_length):
-                if guess[i] == guess[j]:  # Current peg position
+                if guess[i] == guess[j]:        # Current peg position
                     continue
                 solutions.append(add_solution(guess[i], j, guess_length))
         solutions = set(map(tuple, solutions))  # Remove duplicate solutions

@@ -262,7 +262,7 @@ class MastermindGame(object):
             self.__pause(self.PAUSE)
             return
 
-        # Show list of saved games
+        # Show saved games
         saved_names = list(saved_games)
         for i, saved_name in enumerate(saved_names):
             saved_names[i] = saved_name.rstrip('.sav')
@@ -511,7 +511,7 @@ class MastermindGame(object):
             for turn in range(self.current_turn, self.turns):
 
                 if load_game:
-                    load_game = False  # Continue game set normally
+                    load_game = False  # Continue normally after loading
 
                 self.current_turn = turn
 
@@ -528,7 +528,7 @@ class MastermindGame(object):
                         break
 
                 if codemaker.is_correct(codebreaker.guess):  # Correct guess
-                    codemaker.feedback = ['b', 'b', 'b', 'b']
+                    codemaker.prepare_feedback(codebreaker.guess, self.feedback_keys)
                     self.record_turn(codebreaker.guess, codemaker.feedback)
                     self.board.update(turn, codebreaker.guess, codemaker.feedback)
                     break
