@@ -1,3 +1,5 @@
+"""Implementation of the game mechanics, logic and text interface of the Mastermind project."""
+
 import os
 import pickle
 import random
@@ -10,6 +12,9 @@ from board import Board
 from functions import is_odd
 
 class MastermindGame(object):
+
+    """MastermindGame class."""
+
     def __init__(self):
         self.PAUSE = 2
         self.WIDTH = 80
@@ -26,7 +31,7 @@ class MastermindGame(object):
         self.feedback_keys = {'correct': 'b', 'partially_correct': 'w'}
 
         self.colour_names = {'r': 'red', 'g': 'green', 'b': 'blue', 'c': 'cyan', 'm': 'magenta', 'y': 'yellow', 'o': 'orange', 'p': 'purple'}
-        self.feedback_names = {'b': 'black', 'w': 'white'}
+        self.feedback_names = {'b': 'black', 'w': 'white'} 
 
         self.games = 2
         self.length = 4
@@ -38,14 +43,17 @@ class MastermindGame(object):
 
 
     def __clear(self):
+        """Clear screen."""
         os.system('clear')
 
 
     def __pause(self, pause):
+        """Pause game."""
         time.sleep(pause)
 
 
     def main(self):
+        """Main game loop."""
         while True:
             mode = self.menu()
             if mode == 's':
@@ -65,6 +73,7 @@ class MastermindGame(object):
 
 
     def menu(self):
+        """Menu screen."""
         while True:
             self.__clear()
 
@@ -81,7 +90,7 @@ class MastermindGame(object):
             print
 
             mode = None
-            while mode not in self.modes:
+            while mode not in self.modes:  # Prompt for mode
                 try:
                     mode = raw_input("> ")[0].lower()
                 except IndexError:
@@ -93,6 +102,7 @@ class MastermindGame(object):
 
 
     def instructions(self):
+        """Instructions screen."""
         self.__clear()
 
         print "Mastermind : Instructions"
@@ -101,8 +111,8 @@ class MastermindGame(object):
         print "It is played in a pre-agreed number of games consisting of 12 turns each."
         print
         print "The codemaker forms a secret pattern which the codebreaker must deduce within a game."
-        print "The secret pattern consists of 4 codes, allowing duplicates, each of which can be of 6 colours."
-        print "The available colours are: red, green, blue, cyan, magenta and yellow."
+        print "The secret pattern consists of 3-8 pegs, allowing duplicates, each of which can be of 3-8 colours."
+        print "The available colours are: red, green, blue, cyan, magenta, yellow, orange and purple."
         print
         print "The codemaker provides feedback on the codebreaker's guesses by:"
         print "    - placing a black key code for each code which has the correct colour and position"
@@ -117,15 +127,16 @@ class MastermindGame(object):
         print "Colours can be specified by entering the first character of each colour."
         print "    Example > Guess: rgby"
         print
-        print "If more than 4 colours is entered, only the first 4 are taken as input."
+        print "For a given game played with n pegs, if more than n colours is entered, only the first n are taken as the guess."
         print "-" * self.WIDTH
         print
 
         sys.stdout.flush()
-        os.system('read -rs -n 1')
+        os.system('read -rs -n 1')  # Exit on key press
 
 
     def options(self):
+        """Options screen."""
         while True:
             self.__clear()
 
@@ -140,8 +151,7 @@ class MastermindGame(object):
 
             setting = None
             settings = self.settings.keys()
-
-            while setting not in settings:
+            while setting not in settings:  # Prompt for setting
                 try:
                     setting = raw_input("> ")[0].lower()
                 except IndexError:
@@ -150,12 +160,14 @@ class MastermindGame(object):
                     print
                     pass
 
-            if setting == 'b':
+            if setting == 'b':  # Back
                break
 
             while True:
                 try:
+                    # Prompt for setting value
                     value = int(raw_input(">> Enter a new value for %s: " % setting.upper()))
+                    # Invalid value
                     if setting == 'g' and is_odd(value):
                         raise 'ParityError'
                     elif (setting == 'p' or setting == 'c') and (value < self.MIN or value > self.MAX):
@@ -168,18 +180,20 @@ class MastermindGame(object):
                 else:
                     break
 
-            setattr(self, self.settings[setting], value)
+            setattr(self, self.settings[setting], value)  # Set value of setting
 
     
     def quit(self):
+        """Quit game."""
         self.__clear()
         print "Thank you for playing!"
         sys.exit()
 
 
     def save_game(self, codemaker, codebreaker):
+        """Save game screen."""
         confirm = None
-        while confirm != 'y' and confirm != 'n':
+        while confirm != 'y' and confirm != 'n':  # Confirm saving
             try:
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except EOFError:
@@ -191,9 +205,10 @@ class MastermindGame(object):
             print
             return
 
-        if not os.path.isdir(self.SAVE_DIR):
+        if not os.path.isdir(self.SAVE_DIR):  # Make save directory if none exists
             os.mkdir(self.SAVE_DIR)
 
+        # Get saved games
         saved_games = os.listdir(self.SAVE_DIR)
         saved_names = list(saved_games)
         if saved_games:
@@ -204,17 +219,18 @@ class MastermindGame(object):
         save_name = None
         while not save_name:
             try:
+                # Prompt for save name
                 save_name = raw_input("Enter a name for your save: ").lower()
-                if save_name == '':
+                if save_name == '':  # Cancel
                     print
                     return
             except EOFError:
                 print
                 pass
-        
-        if save_name in saved_names:
+
+        if save_name in saved_names:  # If save exists
             confirm = None
-            while confirm != 'y' and confirm != 'n':
+            while confirm != 'y' and confirm != 'n':  # Confirm overwriting
                 try:
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except EOFError:
@@ -226,23 +242,27 @@ class MastermindGame(object):
                 print
                 return
 
+        # Save game
         save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
         self.save(save_name, codemaker, codebreaker)
 
 
     def load_game(self):
+        """Load game screen."""
         self.__clear()
 
         print "Mastermind"
         print "-" * self.WIDTH
         print "Searching saved games directory...\n"
 
+        # Get saved games
         saved_games = os.listdir(self.SAVE_DIR)
         if not saved_games:
             print "No saved games found. Aborting..."
             self.__pause(self.PAUSE)
             return
 
+        # Show list of saved games
         saved_names = list(saved_games)
         for i, saved_name in enumerate(saved_names):
             saved_names[i] = saved_name.rstrip('.sav')
@@ -251,19 +271,22 @@ class MastermindGame(object):
         load_name = None
         while load_name not in saved_names:
             try:
+                # Prompt for load name
                 load_name = raw_input("Enter the name of the save you want to load: ").lower()
-                if load_name == '':
+                if load_name == '':  # Cancel
                     return
             except EOFError:
                 print
                 pass
 
+        # Load game
         load_name = os.path.join(self.SAVE_DIR, load_name + '.sav')
         codemaker, codebreaker = self.load(load_name)
         self.play(codemaker=codemaker, codebreaker=codebreaker, load_game=True)
 
     
     def save(self, save_name, codemaker, codebreaker):
+        """Save game."""
         try:
             save_file = open(save_name, 'w')
         except IOError:
@@ -297,6 +320,7 @@ class MastermindGame(object):
 
 
     def load(self, load_name):
+        """Load game."""
         try:
             load_file = open(load_name, 'r')
         except IOError:
@@ -332,6 +356,11 @@ class MastermindGame(object):
 
 
     def display_game_header(self, codemaker, codebreaker):
+        """Display game header.
+
+        The header shown in the secret pattern choice screen.
+
+        """
         print "Mastermind : Play : Game (%d/%d)" % (self.current_game + 1, self.games)
         print "-" * self.WIDTH
         print "%s will be playing as the codemaker" % codemaker.name
@@ -347,7 +376,12 @@ class MastermindGame(object):
 
 
     def display_turn_header(self, codemaker, codebreaker, last_turn=False):
-        if last_turn:
+        """Display turn header.
+
+        The header shown on each turn.
+
+        """
+        if last_turn:  # Hide turn number on last turn
             print "Mastermind : Play : Game (%d/%d)" % (self.current_game + 1, self.games)
         else:
             print "Mastermind : Play : Game (%d/%d) : Turn (%d/%d)" % (self.current_game + 1, self.games, self.current_turn + 1, self.turns)
@@ -364,19 +398,21 @@ class MastermindGame(object):
 
 
     def name_players(self, player1, player2):
+        """Player names input screen."""
         print "Mastermind : Play : Enter your names"
         print "-" * self.WIDTH
 
         player1.ask_for_name("Hi Player 1! What is your name? ")
         player2.ask_for_name("Hi Player 2! What is your name? ")
 
-        while player1.name == player2.name:
+        while player1.name == player2.name:  # Do not allow same names
             print "\nWhoops! Sorry but you can't have the same name.\n"
             player1.ask_for_name("Change your name, Player 1: ")
             player2.ask_for_name("Change your name, Player 2: ")
 
 
     def decide_roles(self, player1, player2):
+        """Decide roles randomly."""
         players = [player1, player2]
         random.shuffle(players)
 
@@ -387,15 +423,22 @@ class MastermindGame(object):
 
 
     def allocate_colours(self):
+        """Return colours for current game set.
+
+        Based on number of colours setting.
+
+        """
         return self.colour_codes[:self.colours]
 
     
     def record_turn(self, guess, feedback):
+        """Record current guess and feedback."""
         self.guesses[str(self.current_game)].append(guess)
         self.feedback[str(self.current_game)].append(feedback)
 
 
     def give_game_feedback(self, codemaker, codebreaker):
+        """Give codebreaker feedback for current game."""
         if codemaker.is_correct(codebreaker.guess):
             print "Correct, %s!\n" % codebreaker.name
         else:
@@ -403,6 +446,7 @@ class MastermindGame(object):
 
 
     def declare_winner(self, player1, player2):
+        """Declare winner of current game set, else tie."""
         if player1.score > player2.score:
             winner = player1
         elif player2.score > player1.score:
@@ -417,15 +461,18 @@ class MastermindGame(object):
 
     
     def is_last_turn(self):
+        """Return True if last turn, else False."""
         return self.current_turn == self.turns - 1
 
 
     def is_last_game(self):
+        """Return True if last game, else False."""
         return self.current_game == self.games - 1
 
     
     def play(self, player1=None, player2=None, codemaker=None, codebreaker=None, load_game=False):
-        if not load_game:
+        """Main game mechanics and logic loop."""
+        if not load_game:  # Initialise new game set
             self.current_colours = self.allocate_colours()
             self.current_game = 0
 
@@ -434,25 +481,28 @@ class MastermindGame(object):
             self.name_players(player1, player2)
             codemaker, codebreaker = self.decide_roles(player1, player2)
 
+            # Remember current game set rules
             codemaker.remember_rules(self.length, self.current_colours)
             codebreaker.remember_rules(self.length, self.current_colours)
 
         for game in range(self.current_game, self.games):
 
-            if not load_game:
+            if not load_game:  # Initialise new game
+                # Create new record entry
                 self.guesses[str(game)] = []
                 self.feedback[str(game)] = []
-
-                self.board = Board(self.length, self.WIDTH, self.turns)
 
                 self.current_game = game
                 self.current_turn = 0
 
+                # Initialise board
+                self.board = Board(self.length, self.WIDTH, self.turns)
+
+                # Prepare for next game
                 codemaker.ready_for_game()
                 codebreaker.ready_for_game()
 
                 self.__clear()
-
                 self.display_game_header(codemaker, codebreaker)
 
                 print "%s, DON'T LOOK!" % codebreaker.name.upper()
@@ -461,37 +511,32 @@ class MastermindGame(object):
             for turn in range(self.current_turn, self.turns):
 
                 if load_game:
-                    load_game = False
+                    load_game = False  # Continue game set normally
 
                 self.current_turn = turn
 
                 self.__clear()
-
                 self.display_turn_header(codemaker, codebreaker)
                 self.board.display()
 
-                while True:
+                while True:  # Prompt for guess
                     try:
                         codebreaker.make_guess("%s, make a guess: " % codebreaker.name, allow_save=True)
-                    except EOFError:
+                    except EOFError:  # Ctrl-D is pressed
                         self.save_game(codemaker, codebreaker)
                     else:
                         break
 
-                if codemaker.is_correct(codebreaker.guess):
-                    codemaker.feedback = [' ', ' ', ' ', ' ']
-
+                if codemaker.is_correct(codebreaker.guess):  # Correct guess
+                    codemaker.feedback = ['b', 'b', 'b', 'b']
                     self.record_turn(codebreaker.guess, codemaker.feedback)
                     self.board.update(turn, codebreaker.guess, codemaker.feedback)
-
                     break
 
                 else:
                     codemaker.prepare_feedback(codebreaker.guess, self.feedback_keys)
-
                     print "%s's feedback is" % codemaker.name,
                     codemaker.show_feedback(self.feedback_names)
-
                     codebreaker.analyse_feedback(codemaker.feedback)
 
                     codemaker.gain_point()
@@ -504,7 +549,6 @@ class MastermindGame(object):
                     self.__pause(self.PAUSE)
 
             self.__clear()
-
             self.display_turn_header(codemaker, codebreaker, last_turn=True)
             self.board.display()
 
@@ -519,4 +563,4 @@ class MastermindGame(object):
                 self.declare_winner(codemaker, codebreaker)
                 self.__pause(self.PAUSE)
             else:
-                codemaker, codebreaker = codebreaker, codemaker
+                codemaker, codebreaker = codebreaker, codemaker  # Swap roles
