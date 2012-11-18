@@ -22,10 +22,10 @@ def generate_solutions(guess, feedback):
 
 
     def add_empty_solution(length):
-        """Return list of empty solutions of given length.
+        """Return empty solutions of given length.
 
-        >>> add_empty_solution(3)
-        [['', '', ''], ['', '', ''], ['', '', '']]
+        >>> add_empty_solution(4)
+        [['', '', '', ''], ['', '', '', ''], ['', '', '', ''], ['', '', '', '']]
 
         """
         solutions = []
@@ -37,7 +37,7 @@ def generate_solutions(guess, feedback):
 
 
     def add_correct_solution(guess):
-        """Return list of solutions for feedback 'black' of given guess.
+        """Return solutions for feedback 'black' of given guess.
 
         >>> add_correct_solution(['r', 'g', 'b', 'y'])
         [['r', '', '', ''], ['', 'g', '', ''], ['', '', 'b', ''], ['', '', '', 'y']]
@@ -51,7 +51,7 @@ def generate_solutions(guess, feedback):
 
 
     def add_partially_correct_solution(guess):
-        """Return list of solutions for feedback 'white' of given guess.
+        """Return solutions for feedback 'white' of given guess.
 
         >>> add_partially_correct_solution(['r', 'g', 'b', 'y'])
         [['', 'r', '', ''], ['', '', 'r', ''], ['', '', '', 'r'],

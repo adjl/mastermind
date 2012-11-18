@@ -103,7 +103,6 @@ class ComputerPlayer(Player):
                 colour = list(self.pattern_colours).pop(self.colours_tried)
                 for peg in range(self.pattern_length - len(self.solutions)):
                     self.solutions.append(colour)
-                self.colours_tried += 1
 
             # Determined all colours
             if len(self.solutions) == self.pattern_length:
