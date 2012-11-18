@@ -16,13 +16,13 @@ class MastermindGame(object):
     """MastermindGame class."""
 
     def __init__(self):
-        self.PAUSE = 2
-        self.WIDTH = 80
+        self.pause = 2
+        self.width = 80
 
-        self.MIN = 3
-        self.MAX = 8
+        self.min = 3
+        self.max = 8
 
-        self.SAVE_DIR = 'saves'
+        self.save_dir = 'saves'
 
         self.modes = ['s', 'm', 'd', 'l', 'i', 'o', 'q']
         self.settings = {'g': 'games', 'p': 'length', 'c': 'colours', 'b': None}
@@ -78,7 +78,7 @@ class MastermindGame(object):
             self.__clear()
 
             print "Mastermind"
-            print "-" * self.WIDTH
+            print "-" * self.width
             print "[S] Single-player (PvC)"
             print "[M] Multiplayer (PvP)"
             print "[D] Duel (CvC)"
@@ -86,7 +86,7 @@ class MastermindGame(object):
             print "[I] Instructions"
             print "[O] Options"
             print "[Q] Quit"
-            print "-" * self.WIDTH
+            print "-" * self.width
             print
 
             mode = None
@@ -97,7 +97,6 @@ class MastermindGame(object):
                     mode = None
                 except EOFError:
                     print
-                    pass
             return mode
 
 
@@ -106,7 +105,7 @@ class MastermindGame(object):
         self.__clear()
 
         print "Mastermind : Instructions"
-        print "-" * self.WIDTH
+        print "-" * self.width
         print "Mastermind is played by two players: the codemaker and the codebreaker."
         print "It is played in a pre-agreed number of games consisting of 12 turns each."
         print
@@ -128,7 +127,7 @@ class MastermindGame(object):
         print "    Example > Guess: rgby"
         print
         print "For a given game played with n pegs, if more than n colours is entered, only the first n are taken as the guess."
-        print "-" * self.WIDTH
+        print "-" * self.width
         print
 
         sys.stdout.flush()
@@ -141,12 +140,12 @@ class MastermindGame(object):
             self.__clear()
 
             print "Mastermind : Options"
-            print "-" * self.WIDTH
+            print "-" * self.width
             print "[G] Number of games   (must be even, default=2) : %d" % self.games
             print "[P] Number of pegs    (3-8, default=4)          : %d" % self.length
             print "[C] Number of colours (3-8, default=6)          : %d" % self.colours
             print "[B] Back"
-            print "-" * self.WIDTH
+            print "-" * self.width
             print
 
             setting = None
@@ -158,10 +157,9 @@ class MastermindGame(object):
                     setting = None
                 except EOFError:
                     print
-                    pass
 
             if setting == 'b':  # Back
-               break
+                break
 
             while True:
                 try:
@@ -170,11 +168,10 @@ class MastermindGame(object):
                     # Invalid value
                     if setting == 'g' and is_odd(value):
                         raise 'ParityError'
-                    elif (setting == 'p' or setting == 'c') and (value < self.MIN or value > self.MAX):
+                    elif (setting == 'p' or setting == 'c') and (value < self.min or value > self.max):
                         raise 'RangeError'
                 except EOFError:
                     print 
-                    pass
                 except (ValueError, 'ParityError', 'RangeError'):
                     pass
                 else:
@@ -198,18 +195,17 @@ class MastermindGame(object):
                 confirm = raw_input("\n\nWould you like to save your game (Y/n)? ")[0].lower()
             except EOFError:
                 print
-                pass
             except IndexError:
                 pass
         if confirm == 'n':
             print
             return
 
-        if not os.path.isdir(self.SAVE_DIR):  # Make save directory if none exists
-            os.mkdir(self.SAVE_DIR)
+        if not os.path.isdir(self.save_dir):  # Make save directory if none exists
+            os.mkdir(self.save_dir)
 
         # Get saved games
-        saved_games = os.listdir(self.SAVE_DIR)
+        saved_games = os.listdir(self.save_dir)
         saved_names = list(saved_games)
         if saved_games:
             for i, saved_name in enumerate(saved_names):
@@ -226,7 +222,6 @@ class MastermindGame(object):
                     return
             except EOFError:
                 print
-                pass
 
         if save_name in saved_names:  # If save exists
             confirm = None
@@ -235,7 +230,6 @@ class MastermindGame(object):
                     confirm = raw_input("%s already exists. Would you like to overwrite (y/N)? " % save_name)[0].lower()
                 except EOFError:
                     print
-                    pass
                 except IndexError:
                     pass
             if confirm == 'n':
@@ -243,7 +237,7 @@ class MastermindGame(object):
                 return
 
         # Save game
-        save_name = os.path.join(self.SAVE_DIR, save_name + '.sav')
+        save_name = os.path.join(self.save_dir, save_name + '.sav')
         self.save(save_name, codemaker, codebreaker)
 
 
@@ -252,14 +246,14 @@ class MastermindGame(object):
         self.__clear()
 
         print "Mastermind"
-        print "-" * self.WIDTH
+        print "-" * self.width
         print "Searching saved games directory...\n"
 
         # Get saved games
-        saved_games = os.listdir(self.SAVE_DIR)
+        saved_games = os.listdir(self.save_dir)
         if not saved_games:
             print "No saved games found. Aborting..."
-            self.__pause(self.PAUSE)
+            self.__pause(self.pause)
             return
 
         # Show saved games
@@ -277,10 +271,9 @@ class MastermindGame(object):
                     return
             except EOFError:
                 print
-                pass
 
         # Load game
-        load_name = os.path.join(self.SAVE_DIR, load_name + '.sav')
+        load_name = os.path.join(self.save_dir, load_name + '.sav')
         codemaker, codebreaker = self.load(load_name)
         self.play(codemaker=codemaker, codebreaker=codebreaker, load_game=True)
 
@@ -325,7 +318,7 @@ class MastermindGame(object):
             load_file = open(load_name, 'r')
         except IOError:
             print "Game cannot be loaded. Aborting..."
-            self.__pause(self.PAUSE)
+            self.__pause(self.pause)
             return
 
         try:
@@ -347,7 +340,7 @@ class MastermindGame(object):
 
         except pickle.UnpicklingError:
             print "Game cannot be loaded. Aborting..."
-            self.__pause(self.PAUSE)
+            self.__pause(self.pause)
             load_file.close()
 
         else:
@@ -362,7 +355,7 @@ class MastermindGame(object):
 
         """
         print "Mastermind : Play : Game (%d/%d)" % (self.current_game + 1, self.games)
-        print "-" * self.WIDTH
+        print "-" * self.width
         print "%s will be playing as the codemaker" % codemaker.name
         print "%s will be playing as the codebreaker" % codebreaker.name
         print
@@ -371,7 +364,7 @@ class MastermindGame(object):
         for colour in self.current_colours:
             print self.colour_names[colour],
         print
-        print "-" * self.WIDTH
+        print "-" * self.width
         print
 
 
@@ -385,7 +378,7 @@ class MastermindGame(object):
             print "Mastermind : Play : Game (%d/%d)" % (self.current_game + 1, self.games)
         else:
             print "Mastermind : Play : Game (%d/%d) : Turn (%d/%d)" % (self.current_game + 1, self.games, self.current_turn + 1, self.turns)
-        print "-" * self.WIDTH
+        print "-" * self.width
         print "(Codemaker) %-15s : %-7d" % (codemaker.name, codemaker.score),
         print "(Codebreaker) %-15s : %-7d" % (codebreaker.name, codebreaker.score)
         print "Pegs : %-30d" % self.length,
@@ -393,14 +386,14 @@ class MastermindGame(object):
         print
         print "Attention, humans: Press Ctrl-D during your turn to save."
         print "                   Press Ctrl-C anytime to quit."
-        print "-" * self.WIDTH
+        print "-" * self.width
         print 
 
 
     def name_players(self, player1, player2):
         """Player names input screen."""
         print "Mastermind : Play : Enter your names"
-        print "-" * self.WIDTH
+        print "-" * self.width
 
         player1.ask_for_name("Hi Player 1! What is your name? ")
         player2.ask_for_name("Hi Player 2! What is your name? ")
@@ -496,7 +489,7 @@ class MastermindGame(object):
                 self.current_turn = 0
 
                 # Initialise board
-                self.board = Board(self.length, self.WIDTH, self.turns)
+                self.board = Board(self.length, self.width, self.turns)
 
                 # Prepare for next game
                 codemaker.ready_for_game()
@@ -546,7 +539,7 @@ class MastermindGame(object):
                     self.record_turn(codebreaker.guess, codemaker.feedback)
                     self.board.update(turn, codebreaker.guess, codemaker.feedback)
 
-                    self.__pause(self.PAUSE)
+                    self.__pause(self.pause)
 
             self.__clear()
             self.display_turn_header(codemaker, codebreaker, last_turn=True)
@@ -554,13 +547,13 @@ class MastermindGame(object):
 
             print "%s's secret pattern is" % codemaker.name,
             codemaker.show_secret_pattern(self.colour_names)
-            self.__pause(self.PAUSE * 1.5)
+            self.__pause(self.pause * 1.5)
 
             self.give_game_feedback(codemaker, codebreaker)
-            self.__pause(self.PAUSE)
+            self.__pause(self.pause)
 
             if self.is_last_game():
                 self.declare_winner(codemaker, codebreaker)
-                self.__pause(self.PAUSE)
+                self.__pause(self.pause)
             else:
                 codemaker, codebreaker = codebreaker, codemaker  # Swap roles

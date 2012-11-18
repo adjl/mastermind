@@ -73,7 +73,8 @@ def generate_solutions(guess, feedback):
 
 
     def merge_solutions(new_solutions, cumulative_solutions):
-        """Merge solutions in new_solutions with those in cumulative_solutions whenever possible.
+        """Merge solutions in new_solutions with those in cumulative_solutions
+        whenever possible.
 
         To clarify,
             ['r', '', '', ''] can be merged with ['', 'g', 'b', 'y']
@@ -110,7 +111,10 @@ def generate_solutions(guess, feedback):
         return solutions
 
 
-    generate_solution = {'b': add_correct_solution, 'w': add_partially_correct_solution}
+    generate_solution = {
+            'b': add_correct_solution,
+            'w': add_partially_correct_solution
+            }
     solutions = add_empty_solution(len(guess))  # Start with empty solutions
     for key in feedback:  # Generate and merge solutions for each feedback key
         solutions = merge_solutions(generate_solution[key](guess), solutions)

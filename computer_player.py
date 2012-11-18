@@ -18,20 +18,22 @@ class ComputerPlayer(Player):
     def __init__(self):
         super(ComputerPlayer, self).__init__()  # Invoke parent __init__()
 
-        self.PAUSE = 0.1
-        self.names = ['Chell', 'GLaDOS', 'Curiosity Core', 'Turret', 'Companion Cube', 'Wheatley', 'Cave Johnson', 'Caroline', 'Cake']
+        self.pause = 0.1
+        self.names = ['Chell', 'GLaDOS', 'Curiosity Core', 'Turret',
+                'Companion Cube', 'Wheatley', 'Cave Johnson', 'Caroline',
+                'Cake']
 
 
     def __type(self, message):
         """Simulate typing on terminal."""
         sys.stdout.write(' ')
         sys.stdout.flush()
-        time.sleep(self.PAUSE * 5)
+        time.sleep(self.pause * 5)
         for character in message:
             sys.stdout.write(character)
             sys.stdout.flush()
-            time.sleep(self.PAUSE)
-        time.sleep(self.PAUSE * 5)
+            time.sleep(self.pause)
+        time.sleep(self.pause * 5)
         print
 
 

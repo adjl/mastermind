@@ -5,10 +5,11 @@
 import signal
 
 from mastermind_game import MastermindGame
-from signal_handler import quit
+from signal_handler import quit_game
 
 def main():
-    signal.signal(signal.SIGINT, quit)  # Exit gracefully
+    """Main program loop."""
+    signal.signal(signal.SIGINT, quit_game)  # Exit gracefully
 
     mastermind = MastermindGame()
     mastermind.main()

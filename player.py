@@ -22,7 +22,6 @@ class Player(object):
                     pattern = raw_input(message)[:self.pattern_length].lower()
                 except EOFError:
                     print
-                    pass
 
         if len(pattern) < self.pattern_length:      # Too short
             return
@@ -52,7 +51,6 @@ class Player(object):
                 self.name = raw_input(message).lower().capitalize()
             except EOFError:
                 print
-                pass
 
 
     def choose_secret_pattern(self, message=''):
