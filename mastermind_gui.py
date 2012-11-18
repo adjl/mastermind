@@ -107,8 +107,7 @@ class MastermindGUI(object):
         load_menu_item = gtk.MenuItem("Load")
         load_menu_item.connect('activate', self.file_dialog, "Load your game", 'load')
 
-        # Unfinished
-        load_menu_item.set_sensitive(False)
+        load_menu_item.set_sensitive(False)  # Unfinished
 
         actions_menu.append(load_menu_item)
 
@@ -155,12 +154,10 @@ class MastermindGUI(object):
 
         def save(filename):
             pass
-            file_dialog.destroy()
 
 
         def load(filename):
             pass
-            file_dialog.destroy()
 
 
         operations = {'save': save, 'load': load}
@@ -330,8 +327,7 @@ class MastermindGUI(object):
         save_button = gtk.Button("Save")
         save_button.connect('clicked', self.file_dialog, "Save your game", 'save')
 
-        # Unfinished
-        save_button.set_sensitive(False)
+        save_button.set_sensitive(False)  # Unfinished
 
         ok_button = gtk.Button("OK")
         ok_button.connect('clicked', set_guess)

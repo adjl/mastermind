@@ -75,8 +75,8 @@ also change settings in the Options screen [O].
 You will then be asked to enter your name and, when playing as the codemaker,
 your secret pattern.
 
-To enter a guess, just type in the first character of each colour (e.g. 'rgby'
-for 'red green blue yellow').
+To enter a secret pattern or guess, just type in the first character of each
+colour (e.g. 'rgby' for 'red green blue yellow').
 
 When playing as the codebreaker, you can save by pressing Ctrl-D. Enter the
 save file name when prompted. If the save file already exists, you will be
@@ -86,6 +86,9 @@ To load a game, choose Load [L] at the menu screen.
 
 To start the graphical version of the game, run
     ./mastermind.py -g
+
+The method of entering a secret pattern or guess is similar to that in the text
+version.
 
 
 References
