@@ -1,7 +1,7 @@
 # Mastermind
 
 ## About
-Python implementation of the classic board game 'Mastermind'.
+Python implementation of the classic board game 'Mastermind'
 
 ## Features
 The game has three gameplay modes:
@@ -94,3 +94,6 @@ and loading are disabled.
 - Decouple game logic and interface code
 - Implement single-player and duel modes in the graphical version
 - Implement saving and loading in the graphical version
+
+## License
+[MIT License](LICENSE)
