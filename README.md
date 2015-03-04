@@ -1,7 +1,5 @@
 # Mastermind
-
-## About
-Python implementation of the classic board game 'Mastermind'
+Implementation of the classic board game Mastermind in Python
 
 ## Features
 The game has three gameplay modes:
