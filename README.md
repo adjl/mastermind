@@ -1,23 +1,18 @@
-Mastermind Python coursework
-A.Y. 2012 - 2013
+# Mastermind
 
+## About
+Python implementation of the classic board game 'Mastermind'.
 
-About
------
-A Python implementation of the classic board game 'Mastermind'.
-
-
-Features
---------
+## Features
 The game has three gameplay modes:
-    - Single-player, where a human plays against the computer
-    - Multiplayer, where humans play against each other
-    - Duel, where computer players play against each other
+- Single-player, where a human plays against the computer
+- Multiplayer, where humans play against each other
+- Duel, where computer players play against each other
 
 The game has an options screen where the user can change game settings:
-    - number of games, which must be even
-    - number of pegs, which must be 3 - 8
-    - number of colours, which must be 3 - 8
+- number of games, which must be even
+- number of pegs, which must be 3-8
+- number of colours, which must be 3-8
 
 The game allows saving and loading to and from multiple game files. It also
 checks for possible overwriting and prompts the user for confirmation. Humans
@@ -28,46 +23,40 @@ On starting, the game asks for names to uniquely identify each player. Computer
 players choose one from a list of available names.
 
 At each turn, the game shows:
-    - the current game and turn number
-    - the total number of games and turns
-    - who the codemaker and codebreaker are
-    - the codemaker and codebreaker scores
-    - the number of pegs and the colours used in the current game set
+- the current game and turn number
+- the total number of games and turns
+- who the codemaker and codebreaker are
+- the codemaker and codebreaker scores
+- the number of pegs and the colours used in the current game set
 
 To keep track of the running game, an ASCII board is displayed and continually
 updated with each new guess and feedback. At the start of a new game, the board
 is cleared.
 
-
-Technical Info
---------------
+## Technical Info
 The game has a global signal handler which catches all KeyboardInterrupts
 (Ctrl-C) and exits the game gracefully.
 
 The solving algorithm works by first determing what colours are in the secret
 pattern. After establishing the colours, an initial guess is made with those
 colours. A list of possible solutions is then generated based on the initial
-feedback. Then, another guess is made using one of the possible solutions. A
+feedback. Then another guess is made using one of the possible solutions. A
 new list of solutions is generated, but only those common to both the previous
 and new lists are taken as real solutions (and hence reducing the solutions
-space). Essentially, the algorithm guesses, generates, then refines.
+space). Essentially, the algorithm guesses, generates then refines.
 
 The solving algorithm runs slowly for feedback containing six or more white
-pegs, so this only applies to games played with 6 - 8 pegs. Generally, the
+pegs, so this only applies to games played with 6-8 pegs. Generally, the
 greater the number of pegs, colours and white pegs, the slower the algorithm.
-(The algorithm is at least O(n3), I think. :[)
-
-At the worst case (8 pegs, 8 colours and 8 white pegs), the algorithm takes
-13m 45s to generate solutions.
 
 PyGTK is used to make the graphical user interface of the game.
 
-
-Usage
------
+## Usage
 To start the text version of the game, run
-    ./mastermind.py -t, or simply
-    ./mastermind.py
+```
+$ ./mastermind.py -t # or simply
+$ ./mastermind.py
+```
 
 To start playing, choose one of the three available modes [S, M, D]. You can
 also change settings in the Options screen [O].
@@ -85,40 +74,23 @@ asked if you want to overwrite.
 To load a game, choose Load [L] at the menu screen.
 
 To start the graphical version of the game, run
-    ./mastermind.py -g
+```
+$ ./mastermind.py -g
+```
 
 The method of entering a secret pattern or guess is similar to that in the text
 version.
 
-
-References
-----------
-Mastermind instructions:
-    http://en.wikipedia.org/wiki/Mastermind_%28board_game%29
-Signal handler:
-    http://stackoverflow.com/questions/4205317/capture-keyboardinterrupt-in-pyth
-    on-without-try-except
-Set objects:
-    http://stackoverflow.com/questions/7961363/python-removing-duplicates-in-lis
-    ts
-    http://stackoverflow.com/questions/1388818/how-can-i-compare-two-lists-in-py
-    thon-and-return-matches
-Computer typing simulation:
-    http://stackoverflow.com/questions/4099422/print-slowly-in-python-simulate-t
-    yping
-
-
-Disclaimer
-----------
+## Disclaimer
 The ComputerPlayer names are taken from the games 'Portal' and 'Portal 2'. They
-do not belong to me, they belong to Valve.
+do not belong to me; they belong to Valve.
 
+## Notes
+Only multiplayer mode is enabled in the graphical version of the game. Saving
+and loading are disabled.
 
-To Do
------
-See TODO
-
-
-Notes
------
-See NOTES
+## TODO
+- Speed up solving algorithm
+- Decouple game logic and interface code
+- Implement single-player and duel modes in the graphical version
+- Implement saving and loading in the graphical version
